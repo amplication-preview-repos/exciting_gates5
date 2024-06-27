@@ -26,9 +26,15 @@ import { Event } from "./Event";
 import { EventFindManyArgs } from "./EventFindManyArgs";
 import { EventWhereUniqueInput } from "./EventWhereUniqueInput";
 import { EventUpdateInput } from "./EventUpdateInput";
+import { PurchasedTicketFindManyArgs } from "../../purchasedTicket/base/PurchasedTicketFindManyArgs";
+import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
+import { PurchasedTicketWhereUniqueInput } from "../../purchasedTicket/base/PurchasedTicketWhereUniqueInput";
 import { SubAdminFindManyArgs } from "../../subAdmin/base/SubAdminFindManyArgs";
 import { SubAdmin } from "../../subAdmin/base/SubAdmin";
 import { SubAdminWhereUniqueInput } from "../../subAdmin/base/SubAdminWhereUniqueInput";
+import { TicketTierFindManyArgs } from "../../ticketTier/base/TicketTierFindManyArgs";
+import { TicketTier } from "../../ticketTier/base/TicketTier";
+import { TicketTierWhereUniqueInput } from "../../ticketTier/base/TicketTierWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -53,11 +59,9 @@ export class EventControllerBase {
       data: {
         ...data,
 
-        user: data.user
-          ? {
-              connect: data.user,
-            }
-          : undefined,
+        user: {
+          connect: data.user,
+        },
       },
       select: {
         approvedDate: true,
@@ -70,7 +74,6 @@ export class EventControllerBase {
         guestPerformers: true,
         id: true,
         isApproved: true,
-        ticketTiers: true,
         title: true,
         trailer: true,
         updatedAt: true,
@@ -111,7 +114,6 @@ export class EventControllerBase {
         guestPerformers: true,
         id: true,
         isApproved: true,
-        ticketTiers: true,
         title: true,
         trailer: true,
         updatedAt: true,
@@ -153,7 +155,6 @@ export class EventControllerBase {
         guestPerformers: true,
         id: true,
         isApproved: true,
-        ticketTiers: true,
         title: true,
         trailer: true,
         updatedAt: true,
@@ -195,11 +196,9 @@ export class EventControllerBase {
         data: {
           ...data,
 
-          user: data.user
-            ? {
-                connect: data.user,
-              }
-            : undefined,
+          user: {
+            connect: data.user,
+          },
         },
         select: {
           approvedDate: true,
@@ -212,7 +211,6 @@ export class EventControllerBase {
           guestPerformers: true,
           id: true,
           isApproved: true,
-          ticketTiers: true,
           title: true,
           trailer: true,
           updatedAt: true,
@@ -262,7 +260,6 @@ export class EventControllerBase {
           guestPerformers: true,
           id: true,
           isApproved: true,
-          ticketTiers: true,
           title: true,
           trailer: true,
           updatedAt: true,
@@ -282,6 +279,123 @@ export class EventControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/purchasedTickets")
+  @ApiNestedQuery(PurchasedTicketFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "PurchasedTicket",
+    action: "read",
+    possession: "any",
+  })
+  async findPurchasedTickets(
+    @common.Req() request: Request,
+    @common.Param() params: EventWhereUniqueInput
+  ): Promise<PurchasedTicket[]> {
+    const query = plainToClass(PurchasedTicketFindManyArgs, request.query);
+    const results = await this.service.findPurchasedTickets(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+
+        event: {
+          select: {
+            id: true,
+          },
+        },
+
+        id: true,
+        qrCode: true,
+        status: true,
+
+        ticket: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/purchasedTickets")
+  @nestAccessControl.UseRoles({
+    resource: "Event",
+    action: "update",
+    possession: "any",
+  })
+  async connectPurchasedTickets(
+    @common.Param() params: EventWhereUniqueInput,
+    @common.Body() body: PurchasedTicketWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      purchasedTickets: {
+        connect: body,
+      },
+    };
+    await this.service.updateEvent({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/purchasedTickets")
+  @nestAccessControl.UseRoles({
+    resource: "Event",
+    action: "update",
+    possession: "any",
+  })
+  async updatePurchasedTickets(
+    @common.Param() params: EventWhereUniqueInput,
+    @common.Body() body: PurchasedTicketWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      purchasedTickets: {
+        set: body,
+      },
+    };
+    await this.service.updateEvent({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/purchasedTickets")
+  @nestAccessControl.UseRoles({
+    resource: "Event",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectPurchasedTickets(
+    @common.Param() params: EventWhereUniqueInput,
+    @common.Body() body: PurchasedTicketWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      purchasedTickets: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateEvent({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
@@ -308,15 +422,10 @@ export class EventControllerBase {
           },
         },
 
+        eventRelation: true,
         id: true,
         isActive: true,
         updatedAt: true,
-
-        user: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
     if (results === null) {
@@ -383,6 +492,120 @@ export class EventControllerBase {
   ): Promise<void> {
     const data = {
       subAdmins: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateEvent({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/ticketTiers")
+  @ApiNestedQuery(TicketTierFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "TicketTier",
+    action: "read",
+    possession: "any",
+  })
+  async findTicketTiers(
+    @common.Req() request: Request,
+    @common.Param() params: EventWhereUniqueInput
+  ): Promise<TicketTier[]> {
+    const query = plainToClass(TicketTierFindManyArgs, request.query);
+    const results = await this.service.findTicketTiers(params.id, {
+      ...query,
+      select: {
+        amountOnSale: true,
+        amountOnSaleTs: true,
+        amountSold: true,
+        amountSoldTs: true,
+        createdAt: true,
+        endDate: true,
+        endDateTs: true,
+
+        event: {
+          select: {
+            id: true,
+          },
+        },
+
+        id: true,
+        purchasePrice: true,
+        purchasePriceTs: true,
+        startDate: true,
+        startDateTs: true,
+        title: true,
+        titleTs: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/ticketTiers")
+  @nestAccessControl.UseRoles({
+    resource: "Event",
+    action: "update",
+    possession: "any",
+  })
+  async connectTicketTiers(
+    @common.Param() params: EventWhereUniqueInput,
+    @common.Body() body: TicketTierWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      ticketTiers: {
+        connect: body,
+      },
+    };
+    await this.service.updateEvent({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/ticketTiers")
+  @nestAccessControl.UseRoles({
+    resource: "Event",
+    action: "update",
+    possession: "any",
+  })
+  async updateTicketTiers(
+    @common.Param() params: EventWhereUniqueInput,
+    @common.Body() body: TicketTierWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      ticketTiers: {
+        set: body,
+      },
+    };
+    await this.service.updateEvent({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/ticketTiers")
+  @nestAccessControl.UseRoles({
+    resource: "Event",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectTicketTiers(
+    @common.Param() params: EventWhereUniqueInput,
+    @common.Body() body: TicketTierWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      ticketTiers: {
         disconnect: body,
       },
     };

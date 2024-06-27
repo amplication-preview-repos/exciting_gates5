@@ -10,37 +10,37 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { InputType, Field } from "@nestjs/graphql";
-import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
+import { TransactionWhereUniqueInput } from "../../transaction/base/TransactionWhereUniqueInput";
 import { ApiProperty } from "@nestjs/swagger";
 
 @InputType()
-class UserUpdateManyWithoutWalletsInput {
-  @Field(() => [UserWhereUniqueInput], {
+class TransactionUpdateManyWithoutWalletsInput {
+  @Field(() => [TransactionWhereUniqueInput], {
     nullable: true,
   })
   @ApiProperty({
     required: false,
-    type: () => [UserWhereUniqueInput],
+    type: () => [TransactionWhereUniqueInput],
   })
-  connect?: Array<UserWhereUniqueInput>;
+  connect?: Array<TransactionWhereUniqueInput>;
 
-  @Field(() => [UserWhereUniqueInput], {
+  @Field(() => [TransactionWhereUniqueInput], {
     nullable: true,
   })
   @ApiProperty({
     required: false,
-    type: () => [UserWhereUniqueInput],
+    type: () => [TransactionWhereUniqueInput],
   })
-  disconnect?: Array<UserWhereUniqueInput>;
+  disconnect?: Array<TransactionWhereUniqueInput>;
 
-  @Field(() => [UserWhereUniqueInput], {
+  @Field(() => [TransactionWhereUniqueInput], {
     nullable: true,
   })
   @ApiProperty({
     required: false,
-    type: () => [UserWhereUniqueInput],
+    type: () => [TransactionWhereUniqueInput],
   })
-  set?: Array<UserWhereUniqueInput>;
+  set?: Array<TransactionWhereUniqueInput>;
 }
 
-export { UserUpdateManyWithoutWalletsInput as UserUpdateManyWithoutWalletsInput };
+export { TransactionUpdateManyWithoutWalletsInput as TransactionUpdateManyWithoutWalletsInput };

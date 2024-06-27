@@ -8,8 +8,11 @@ import {
   NumberInput,
   ReferenceArrayInput,
   SelectArrayInput,
+  ReferenceInput,
+  SelectInput,
 } from "react-admin";
 
+import { TransactionTitle } from "../transaction/TransactionTitle";
 import { UserTitle } from "../user/UserTitle";
 
 export const WalletEdit = (props: EditProps): React.ReactElement => {
@@ -18,15 +21,17 @@ export const WalletEdit = (props: EditProps): React.ReactElement => {
       <SimpleForm>
         <TextInput label="pin" source="pin" />
         <NumberInput label="totalAmount" source="totalAmount" />
-        <div />
         <ReferenceArrayInput
-          source="users"
-          reference="User"
+          source="transactions"
+          reference="Transaction"
           parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
           format={(value: any) => value && value.map((v: any) => v.id)}
         >
-          <SelectArrayInput optionText={UserTitle} />
+          <SelectArrayInput optionText={TransactionTitle} />
         </ReferenceArrayInput>
+        <ReferenceInput source="user.id" reference="User" label="User">
+          <SelectInput optionText={UserTitle} />
+        </ReferenceInput>
       </SimpleForm>
     </Edit>
   );

@@ -1,3 +1,5 @@
+import { EventWhereUniqueInput } from "../event/EventWhereUniqueInput";
+
 export type TicketTierCreateInput = {
   amountOnSale?: number | null;
   amountOnSaleTs?: number | null;
@@ -5,6 +7,7 @@ export type TicketTierCreateInput = {
   amountSoldTs?: number | null;
   endDate?: Date | null;
   endDateTs?: Date | null;
+  event?: EventWhereUniqueInput | null;
   purchasePrice?: number | null;
   purchasePriceTs?: number | null;
   startDate?: Date | null;

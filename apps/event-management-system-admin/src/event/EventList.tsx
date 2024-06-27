@@ -33,7 +33,6 @@ export const EventList = (props: ListProps): React.ReactElement => {
         <TextField label="guestPerformers" source="guestPerformers" />
         <TextField label="ID" source="id" />
         <BooleanField label="isApproved" source="isApproved" />
-        <TextField label="ticketTiers" source="ticketTiers" />
         <TextField label="title" source="title" />
         <TextField label="trailer" source="trailer" />
         <DateField source="updatedAt" label="Updated At" />

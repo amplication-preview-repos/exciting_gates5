@@ -11,7 +11,6 @@ import {
 } from "react-admin";
 
 import { EVENT_TITLE_FIELD } from "../event/EventTitle";
-import { USER_TITLE_FIELD } from "../user/UserTitle";
 
 export const SubAdminShow = (props: ShowProps): React.ReactElement => {
   return (
@@ -21,12 +20,10 @@ export const SubAdminShow = (props: ShowProps): React.ReactElement => {
         <ReferenceField label="event" source="event.id" reference="Event">
           <TextField source={EVENT_TITLE_FIELD} />
         </ReferenceField>
+        <TextField label="eventRelation" source="eventRelation" />
         <TextField label="ID" source="id" />
         <BooleanField label="isActive" source="isActive" />
         <DateField source="updatedAt" label="Updated At" />
-        <ReferenceField label="user" source="user.id" reference="User">
-          <TextField source={USER_TITLE_FIELD} />
-        </ReferenceField>
       </SimpleShowLayout>
     </Show>
   );

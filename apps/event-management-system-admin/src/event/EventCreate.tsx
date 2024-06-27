@@ -13,7 +13,9 @@ import {
   SelectInput,
 } from "react-admin";
 
+import { PurchasedTicketTitle } from "../purchasedTicket/PurchasedTicketTitle";
 import { SubAdminTitle } from "../subAdmin/SubAdminTitle";
+import { TicketTierTitle } from "../ticketTier/TicketTierTitle";
 import { UserTitle } from "../user/UserTitle";
 
 export const EventCreate = (props: CreateProps): React.ReactElement => {
@@ -29,6 +31,14 @@ export const EventCreate = (props: CreateProps): React.ReactElement => {
         <div />
         <BooleanInput label="isApproved" source="isApproved" />
         <ReferenceArrayInput
+          source="purchasedTickets"
+          reference="PurchasedTicket"
+          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
+          format={(value: any) => value && value.map((v: any) => v.id)}
+        >
+          <SelectArrayInput optionText={PurchasedTicketTitle} />
+        </ReferenceArrayInput>
+        <ReferenceArrayInput
           source="subAdmins"
           reference="SubAdmin"
           parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
@@ -36,7 +46,14 @@ export const EventCreate = (props: CreateProps): React.ReactElement => {
         >
           <SelectArrayInput optionText={SubAdminTitle} />
         </ReferenceArrayInput>
-        <div />
+        <ReferenceArrayInput
+          source="ticketTiers"
+          reference="TicketTier"
+          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
+          format={(value: any) => value && value.map((v: any) => v.id)}
+        >
+          <SelectArrayInput optionText={TicketTierTitle} />
+        </ReferenceArrayInput>
         <TextInput label="title" source="title" />
         <TextInput label="trailer" source="trailer" />
         <ReferenceInput source="user.id" reference="User" label="user">

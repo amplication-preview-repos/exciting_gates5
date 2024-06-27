@@ -14,66 +14,57 @@ import { ApiProperty } from "@nestjs/swagger";
 import {
   IsString,
   MaxLength,
-  IsOptional,
   IsNumber,
   Min,
   Max,
   ValidateNested,
+  IsOptional,
 } from "class-validator";
-import { IsJSONValue } from "../../validators";
-import { GraphQLJSON } from "graphql-type-json";
-import { InputJsonValue } from "../../types";
-import { UserCreateNestedManyWithoutWalletsInput } from "./UserCreateNestedManyWithoutWalletsInput";
+import { TransactionCreateNestedManyWithoutWalletsInput } from "./TransactionCreateNestedManyWithoutWalletsInput";
 import { Type } from "class-transformer";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class WalletCreateInput {
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
   @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  pin?: string | null;
+  @Field(() => String)
+  pin!: string;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: Number,
   })
   @IsNumber()
   @Min(-999999999)
   @Max(999999999)
-  @IsOptional()
-  @Field(() => Number, {
-    nullable: true,
-  })
-  totalAmount?: number | null;
+  @Field(() => Number)
+  totalAmount!: number;
 
   @ApiProperty({
     required: false,
-  })
-  @IsJSONValue()
-  @IsOptional()
-  @Field(() => GraphQLJSON, {
-    nullable: true,
-  })
-  transactions?: InputJsonValue;
-
-  @ApiProperty({
-    required: false,
-    type: () => UserCreateNestedManyWithoutWalletsInput,
+    type: () => TransactionCreateNestedManyWithoutWalletsInput,
   })
   @ValidateNested()
-  @Type(() => UserCreateNestedManyWithoutWalletsInput)
+  @Type(() => TransactionCreateNestedManyWithoutWalletsInput)
   @IsOptional()
-  @Field(() => UserCreateNestedManyWithoutWalletsInput, {
+  @Field(() => TransactionCreateNestedManyWithoutWalletsInput, {
     nullable: true,
   })
-  users?: UserCreateNestedManyWithoutWalletsInput;
+  transactions?: TransactionCreateNestedManyWithoutWalletsInput;
+
+  @ApiProperty({
+    required: true,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  @Field(() => UserWhereUniqueInput)
+  user!: UserWhereUniqueInput;
 }
 
 export { WalletCreateInput as WalletCreateInput };

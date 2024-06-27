@@ -32,9 +32,9 @@ import { EventWhereUniqueInput } from "../../event/base/EventWhereUniqueInput";
 import { NotificationFindManyArgs } from "../../notification/base/NotificationFindManyArgs";
 import { Notification } from "../../notification/base/Notification";
 import { NotificationWhereUniqueInput } from "../../notification/base/NotificationWhereUniqueInput";
-import { SubAdminFindManyArgs } from "../../subAdmin/base/SubAdminFindManyArgs";
-import { SubAdmin } from "../../subAdmin/base/SubAdmin";
-import { SubAdminWhereUniqueInput } from "../../subAdmin/base/SubAdminWhereUniqueInput";
+import { PurchasedTicketFindManyArgs } from "../../purchasedTicket/base/PurchasedTicketFindManyArgs";
+import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
+import { PurchasedTicketWhereUniqueInput } from "../../purchasedTicket/base/PurchasedTicketWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -306,7 +306,6 @@ export class UserControllerBase {
         guestPerformers: true,
         id: true,
         isApproved: true,
-        ticketTiers: true,
         title: true,
         trailer: true,
         updatedAt: true,
@@ -498,19 +497,19 @@ export class UserControllerBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @common.Get("/:id/subAdmins")
-  @ApiNestedQuery(SubAdminFindManyArgs)
+  @common.Get("/:id/purchasedTickets")
+  @ApiNestedQuery(PurchasedTicketFindManyArgs)
   @nestAccessControl.UseRoles({
-    resource: "SubAdmin",
+    resource: "PurchasedTicket",
     action: "read",
     possession: "any",
   })
-  async findSubAdmins(
+  async findPurchasedTickets(
     @common.Req() request: Request,
     @common.Param() params: UserWhereUniqueInput
-  ): Promise<SubAdmin[]> {
-    const query = plainToClass(SubAdminFindManyArgs, request.query);
-    const results = await this.service.findSubAdmins(params.id, {
+  ): Promise<PurchasedTicket[]> {
+    const query = plainToClass(PurchasedTicketFindManyArgs, request.query);
+    const results = await this.service.findPurchasedTickets(params.id, {
       ...query,
       select: {
         createdAt: true,
@@ -522,7 +521,15 @@ export class UserControllerBase {
         },
 
         id: true,
-        isActive: true,
+        qrCode: true,
+        status: true,
+
+        ticket: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
 
         user: {
@@ -540,18 +547,18 @@ export class UserControllerBase {
     return results;
   }
 
-  @common.Post("/:id/subAdmins")
+  @common.Post("/:id/purchasedTickets")
   @nestAccessControl.UseRoles({
     resource: "User",
     action: "update",
     possession: "any",
   })
-  async connectSubAdmins(
+  async connectPurchasedTickets(
     @common.Param() params: UserWhereUniqueInput,
-    @common.Body() body: SubAdminWhereUniqueInput[]
+    @common.Body() body: PurchasedTicketWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      subAdmins: {
+      purchasedTickets: {
         connect: body,
       },
     };
@@ -562,18 +569,18 @@ export class UserControllerBase {
     });
   }
 
-  @common.Patch("/:id/subAdmins")
+  @common.Patch("/:id/purchasedTickets")
   @nestAccessControl.UseRoles({
     resource: "User",
     action: "update",
     possession: "any",
   })
-  async updateSubAdmins(
+  async updatePurchasedTickets(
     @common.Param() params: UserWhereUniqueInput,
-    @common.Body() body: SubAdminWhereUniqueInput[]
+    @common.Body() body: PurchasedTicketWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      subAdmins: {
+      purchasedTickets: {
         set: body,
       },
     };
@@ -584,18 +591,18 @@ export class UserControllerBase {
     });
   }
 
-  @common.Delete("/:id/subAdmins")
+  @common.Delete("/:id/purchasedTickets")
   @nestAccessControl.UseRoles({
     resource: "User",
     action: "update",
     possession: "any",
   })
-  async disconnectSubAdmins(
+  async disconnectPurchasedTickets(
     @common.Param() params: UserWhereUniqueInput,
-    @common.Body() body: SubAdminWhereUniqueInput[]
+    @common.Body() body: PurchasedTicketWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      subAdmins: {
+      purchasedTickets: {
         disconnect: body,
       },
     };

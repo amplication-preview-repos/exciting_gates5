@@ -26,9 +26,9 @@ import { Wallet } from "./Wallet";
 import { WalletFindManyArgs } from "./WalletFindManyArgs";
 import { WalletWhereUniqueInput } from "./WalletWhereUniqueInput";
 import { WalletUpdateInput } from "./WalletUpdateInput";
-import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
-import { User } from "../../user/base/User";
-import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
+import { TransactionFindManyArgs } from "../../transaction/base/TransactionFindManyArgs";
+import { Transaction } from "../../transaction/base/Transaction";
+import { TransactionWhereUniqueInput } from "../../transaction/base/TransactionWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -50,14 +50,25 @@ export class WalletControllerBase {
   })
   async createWallet(@common.Body() data: WalletCreateInput): Promise<Wallet> {
     return await this.service.createWallet({
-      data: data,
+      data: {
+        ...data,
+
+        user: {
+          connect: data.user,
+        },
+      },
       select: {
         createdAt: true,
         id: true,
         pin: true,
         totalAmount: true,
-        transactions: true,
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -83,8 +94,13 @@ export class WalletControllerBase {
         id: true,
         pin: true,
         totalAmount: true,
-        transactions: true,
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -111,8 +127,13 @@ export class WalletControllerBase {
         id: true,
         pin: true,
         totalAmount: true,
-        transactions: true,
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (result === null) {
@@ -142,14 +163,25 @@ export class WalletControllerBase {
     try {
       return await this.service.updateWallet({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          user: {
+            connect: data.user,
+          },
+        },
         select: {
           createdAt: true,
           id: true,
           pin: true,
           totalAmount: true,
-          transactions: true,
           updatedAt: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -184,8 +216,13 @@ export class WalletControllerBase {
           id: true,
           pin: true,
           totalAmount: true,
-          transactions: true,
           updatedAt: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -199,33 +236,27 @@ export class WalletControllerBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @common.Get("/:id/users")
-  @ApiNestedQuery(UserFindManyArgs)
+  @common.Get("/:id/transactions")
+  @ApiNestedQuery(TransactionFindManyArgs)
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Transaction",
     action: "read",
     possession: "any",
   })
-  async findUsers(
+  async findTransactions(
     @common.Req() request: Request,
     @common.Param() params: WalletWhereUniqueInput
-  ): Promise<User[]> {
-    const query = plainToClass(UserFindManyArgs, request.query);
-    const results = await this.service.findUsers(params.id, {
+  ): Promise<Transaction[]> {
+    const query = plainToClass(TransactionFindManyArgs, request.query);
+    const results = await this.service.findTransactions(params.id, {
       ...query,
       select: {
+        amount: true,
         createdAt: true,
-        email: true,
-        firstName: true,
         id: true,
-        lastName: true,
-        mobile: true,
-        nationality: true,
-        nickName: true,
-        preferences: true,
-        roles: true,
+        metadata: true,
+        transactionType: true,
         updatedAt: true,
-        username: true,
 
         wallet: {
           select: {
@@ -242,18 +273,18 @@ export class WalletControllerBase {
     return results;
   }
 
-  @common.Post("/:id/users")
+  @common.Post("/:id/transactions")
   @nestAccessControl.UseRoles({
     resource: "Wallet",
     action: "update",
     possession: "any",
   })
-  async connectUsers(
+  async connectTransactions(
     @common.Param() params: WalletWhereUniqueInput,
-    @common.Body() body: UserWhereUniqueInput[]
+    @common.Body() body: TransactionWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      users: {
+      transactions: {
         connect: body,
       },
     };
@@ -264,18 +295,18 @@ export class WalletControllerBase {
     });
   }
 
-  @common.Patch("/:id/users")
+  @common.Patch("/:id/transactions")
   @nestAccessControl.UseRoles({
     resource: "Wallet",
     action: "update",
     possession: "any",
   })
-  async updateUsers(
+  async updateTransactions(
     @common.Param() params: WalletWhereUniqueInput,
-    @common.Body() body: UserWhereUniqueInput[]
+    @common.Body() body: TransactionWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      users: {
+      transactions: {
         set: body,
       },
     };
@@ -286,18 +317,18 @@ export class WalletControllerBase {
     });
   }
 
-  @common.Delete("/:id/users")
+  @common.Delete("/:id/transactions")
   @nestAccessControl.UseRoles({
     resource: "Wallet",
     action: "update",
     possession: "any",
   })
-  async disconnectUsers(
+  async disconnectTransactions(
     @common.Param() params: WalletWhereUniqueInput,
-    @common.Body() body: UserWhereUniqueInput[]
+    @common.Body() body: TransactionWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      users: {
+      transactions: {
         disconnect: body,
       },
     };

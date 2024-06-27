@@ -49,22 +49,28 @@ export class TransactionControllerBase {
     @common.Body() data: TransactionCreateInput
   ): Promise<Transaction> {
     return await this.service.createTransaction({
-      data: data,
+      data: {
+        ...data,
+
+        wallet: data.wallet
+          ? {
+              connect: data.wallet,
+            }
+          : undefined,
+      },
       select: {
         amount: true,
-        amountTxn: true,
         createdAt: true,
         id: true,
         metadata: true,
-        metadataTs: true,
-        metadataTxn: true,
         transactionType: true,
-        transactionTypeEnumTs: true,
-        transactionTypeTs: true,
-        transactionTypeTxn: true,
         updatedAt: true,
-        walletRelationTxn: true,
-        walletTxn: true,
+
+        wallet: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -87,19 +93,17 @@ export class TransactionControllerBase {
       ...args,
       select: {
         amount: true,
-        amountTxn: true,
         createdAt: true,
         id: true,
         metadata: true,
-        metadataTs: true,
-        metadataTxn: true,
         transactionType: true,
-        transactionTypeEnumTs: true,
-        transactionTypeTs: true,
-        transactionTypeTxn: true,
         updatedAt: true,
-        walletRelationTxn: true,
-        walletTxn: true,
+
+        wallet: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -123,19 +127,17 @@ export class TransactionControllerBase {
       where: params,
       select: {
         amount: true,
-        amountTxn: true,
         createdAt: true,
         id: true,
         metadata: true,
-        metadataTs: true,
-        metadataTxn: true,
         transactionType: true,
-        transactionTypeEnumTs: true,
-        transactionTypeTs: true,
-        transactionTypeTxn: true,
         updatedAt: true,
-        walletRelationTxn: true,
-        walletTxn: true,
+
+        wallet: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (result === null) {
@@ -165,22 +167,28 @@ export class TransactionControllerBase {
     try {
       return await this.service.updateTransaction({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          wallet: data.wallet
+            ? {
+                connect: data.wallet,
+              }
+            : undefined,
+        },
         select: {
           amount: true,
-          amountTxn: true,
           createdAt: true,
           id: true,
           metadata: true,
-          metadataTs: true,
-          metadataTxn: true,
           transactionType: true,
-          transactionTypeEnumTs: true,
-          transactionTypeTs: true,
-          transactionTypeTxn: true,
           updatedAt: true,
-          walletRelationTxn: true,
-          walletTxn: true,
+
+          wallet: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -212,19 +220,17 @@ export class TransactionControllerBase {
         where: params,
         select: {
           amount: true,
-          amountTxn: true,
           createdAt: true,
           id: true,
           metadata: true,
-          metadataTs: true,
-          metadataTxn: true,
           transactionType: true,
-          transactionTypeEnumTs: true,
-          transactionTypeTs: true,
-          transactionTypeTxn: true,
           updatedAt: true,
-          walletRelationTxn: true,
-          walletTxn: true,
+
+          wallet: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {

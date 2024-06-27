@@ -3,7 +3,7 @@ import { EventListRelationFilter } from "../event/EventListRelationFilter";
 import { StringFilter } from "../../util/StringFilter";
 import { NotificationListRelationFilter } from "../notification/NotificationListRelationFilter";
 import { JsonFilter } from "../../util/JsonFilter";
-import { SubAdminListRelationFilter } from "../subAdmin/SubAdminListRelationFilter";
+import { PurchasedTicketListRelationFilter } from "../purchasedTicket/PurchasedTicketListRelationFilter";
 import { WalletWhereUniqueInput } from "../wallet/WalletWhereUniqueInput";
 
 export type UserWhereInput = {
@@ -17,7 +17,7 @@ export type UserWhereInput = {
   nickName?: StringNullableFilter;
   notifications?: NotificationListRelationFilter;
   preferences?: JsonFilter;
-  subAdmins?: SubAdminListRelationFilter;
+  purchasedTickets?: PurchasedTicketListRelationFilter;
   username?: StringFilter;
   wallet?: WalletWhereUniqueInput;
 };

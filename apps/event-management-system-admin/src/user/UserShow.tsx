@@ -14,6 +14,7 @@ import {
 
 import { USER_TITLE_FIELD } from "./UserTitle";
 import { EVENT_TITLE_FIELD } from "../event/EventTitle";
+import { TICKET_TITLE_FIELD } from "../ticket/TicketTitle";
 import { WALLET_TITLE_FIELD } from "../wallet/WalletTitle";
 
 export const UserShow = (props: ShowProps): React.ReactElement => {
@@ -47,7 +48,6 @@ export const UserShow = (props: ShowProps): React.ReactElement => {
             <TextField label="guestPerformers" source="guestPerformers" />
             <TextField label="ID" source="id" />
             <BooleanField label="isApproved" source="isApproved" />
-            <TextField label="ticketTiers" source="ticketTiers" />
             <TextField label="title" source="title" />
             <TextField label="trailer" source="trailer" />
             <DateField source="updatedAt" label="Updated At" />
@@ -75,9 +75,9 @@ export const UserShow = (props: ShowProps): React.ReactElement => {
           </Datagrid>
         </ReferenceManyField>
         <ReferenceManyField
-          reference="SubAdmin"
+          reference="PurchasedTicket"
           target="userId"
-          label="SubAdmins"
+          label="PurchasedTickets"
         >
           <Datagrid rowClick="show">
             <DateField source="createdAt" label="Created At" />
@@ -85,7 +85,15 @@ export const UserShow = (props: ShowProps): React.ReactElement => {
               <TextField source={EVENT_TITLE_FIELD} />
             </ReferenceField>
             <TextField label="ID" source="id" />
-            <BooleanField label="isActive" source="isActive" />
+            <TextField label="qrCode" source="qrCode" />
+            <TextField label="status" source="status" />
+            <ReferenceField
+              label="ticket"
+              source="ticket.id"
+              reference="Ticket"
+            >
+              <TextField source={TICKET_TITLE_FIELD} />
+            </ReferenceField>
             <DateField source="updatedAt" label="Updated At" />
             <ReferenceField label="user" source="user.id" reference="User">
               <TextField source={USER_TITLE_FIELD} />

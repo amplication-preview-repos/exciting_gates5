@@ -26,6 +26,7 @@ import { TicketTierFindUniqueArgs } from "./TicketTierFindUniqueArgs";
 import { CreateTicketTierArgs } from "./CreateTicketTierArgs";
 import { UpdateTicketTierArgs } from "./UpdateTicketTierArgs";
 import { DeleteTicketTierArgs } from "./DeleteTicketTierArgs";
+import { Event } from "../../event/base/Event";
 import { TicketTierService } from "../ticketTier.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => TicketTier)
@@ -92,7 +93,15 @@ export class TicketTierResolverBase {
   ): Promise<TicketTier> {
     return await this.service.createTicketTier({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        event: args.data.event
+          ? {
+              connect: args.data.event,
+            }
+          : undefined,
+      },
     });
   }
 
@@ -109,7 +118,15 @@ export class TicketTierResolverBase {
     try {
       return await this.service.updateTicketTier({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          event: args.data.event
+            ? {
+                connect: args.data.event,
+              }
+            : undefined,
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -140,5 +157,24 @@ export class TicketTierResolverBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => Event, {
+    nullable: true,
+    name: "event",
+  })
+  @nestAccessControl.UseRoles({
+    resource: "Event",
+    action: "read",
+    possession: "any",
+  })
+  async getEvent(@graphql.Parent() parent: TicketTier): Promise<Event | null> {
+    const result = await this.service.getEvent(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

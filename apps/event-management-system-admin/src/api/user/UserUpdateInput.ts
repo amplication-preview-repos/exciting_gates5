@@ -1,7 +1,7 @@
 import { EventUpdateManyWithoutUsersInput } from "./EventUpdateManyWithoutUsersInput";
 import { NotificationUpdateManyWithoutUsersInput } from "./NotificationUpdateManyWithoutUsersInput";
 import { InputJsonValue } from "../../types";
-import { SubAdminUpdateManyWithoutUsersInput } from "./SubAdminUpdateManyWithoutUsersInput";
+import { PurchasedTicketUpdateManyWithoutUsersInput } from "./PurchasedTicketUpdateManyWithoutUsersInput";
 import { WalletWhereUniqueInput } from "../wallet/WalletWhereUniqueInput";
 
 export type UserUpdateInput = {
@@ -15,8 +15,8 @@ export type UserUpdateInput = {
   notifications?: NotificationUpdateManyWithoutUsersInput;
   password?: string;
   preferences?: InputJsonValue;
+  purchasedTickets?: PurchasedTicketUpdateManyWithoutUsersInput;
   roles?: InputJsonValue;
-  subAdmins?: SubAdminUpdateManyWithoutUsersInput;
   username?: string;
   wallet?: WalletWhereUniqueInput | null;
 };

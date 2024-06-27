@@ -16,11 +16,11 @@ import {
   ValidateNested,
   IsOptional,
   IsString,
+  MaxLength,
   IsBoolean,
 } from "class-validator";
 import { Type } from "class-transformer";
 import { Event } from "../../event/base/Event";
-import { User } from "../../user/base/User";
 
 @ObjectType()
 class SubAdmin {
@@ -40,6 +40,18 @@ class SubAdmin {
   @Type(() => Event)
   @IsOptional()
   event?: Event | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  eventRelation!: string | null;
 
   @ApiProperty({
     required: true,
@@ -67,15 +79,6 @@ class SubAdmin {
   @Type(() => Date)
   @Field(() => Date)
   updatedAt!: Date;
-
-  @ApiProperty({
-    required: false,
-    type: () => User,
-  })
-  @ValidateNested()
-  @Type(() => User)
-  @IsOptional()
-  user?: User | null;
 }
 
 export { SubAdmin as SubAdmin };

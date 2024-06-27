@@ -11,17 +11,21 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
+
 import {
   IsInt,
   Min,
   Max,
   IsOptional,
   IsDate,
+  ValidateNested,
   IsString,
   IsNumber,
   MaxLength,
 } from "class-validator";
+
 import { Type } from "class-transformer";
+import { Event } from "../../event/base/Event";
 
 @ObjectType()
 class TicketTier {
@@ -106,6 +110,15 @@ class TicketTier {
     nullable: true,
   })
   endDateTs!: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => Event,
+  })
+  @ValidateNested()
+  @Type(() => Event)
+  @IsOptional()
+  event?: Event | null;
 
   @ApiProperty({
     required: true,

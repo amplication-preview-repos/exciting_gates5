@@ -5,6 +5,6 @@ export type WalletOrderByInput = {
   id?: SortOrder;
   pin?: SortOrder;
   totalAmount?: SortOrder;
-  transactions?: SortOrder;
   updatedAt?: SortOrder;
+  userId?: SortOrder;
 };

@@ -13,11 +13,11 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { FloatNullableFilter } from "../../util/FloatNullableFilter";
 import { Type } from "class-transformer";
-import { IsOptional, IsEnum } from "class-validator";
+import { IsOptional, IsEnum, ValidateNested } from "class-validator";
 import { StringFilter } from "../../util/StringFilter";
 import { JsonFilter } from "../../util/JsonFilter";
-import { StringNullableFilter } from "../../util/StringNullableFilter";
-import { EnumTransactionTransactionTypeEnumTs } from "./EnumTransactionTransactionTypeEnumTs";
+import { EnumTransactionTransactionType } from "./EnumTransactionTransactionType";
+import { WalletWhereUniqueInput } from "../../wallet/base/WalletWhereUniqueInput";
 
 @InputType()
 class TransactionWhereInput {
@@ -31,17 +31,6 @@ class TransactionWhereInput {
     nullable: true,
   })
   amount?: FloatNullableFilter;
-
-  @ApiProperty({
-    required: false,
-    type: FloatNullableFilter,
-  })
-  @Type(() => FloatNullableFilter)
-  @IsOptional()
-  @Field(() => FloatNullableFilter, {
-    nullable: true,
-  })
-  amountTxn?: FloatNullableFilter;
 
   @ApiProperty({
     required: false,
@@ -67,91 +56,26 @@ class TransactionWhereInput {
 
   @ApiProperty({
     required: false,
-    type: JsonFilter,
+    enum: EnumTransactionTransactionType,
   })
-  @Type(() => JsonFilter)
+  @IsEnum(EnumTransactionTransactionType)
   @IsOptional()
-  @Field(() => JsonFilter, {
+  @Field(() => EnumTransactionTransactionType, {
     nullable: true,
   })
-  metadataTs?: JsonFilter;
+  transactionType?: "Withdraw" | "Deposit" | "Spend";
 
   @ApiProperty({
     required: false,
-    type: JsonFilter,
+    type: () => WalletWhereUniqueInput,
   })
-  @Type(() => JsonFilter)
+  @ValidateNested()
+  @Type(() => WalletWhereUniqueInput)
   @IsOptional()
-  @Field(() => JsonFilter, {
+  @Field(() => WalletWhereUniqueInput, {
     nullable: true,
   })
-  metadataTxn?: JsonFilter;
-
-  @ApiProperty({
-    required: false,
-    type: StringNullableFilter,
-  })
-  @Type(() => StringNullableFilter)
-  @IsOptional()
-  @Field(() => StringNullableFilter, {
-    nullable: true,
-  })
-  transactionType?: StringNullableFilter;
-
-  @ApiProperty({
-    required: false,
-    enum: EnumTransactionTransactionTypeEnumTs,
-  })
-  @IsEnum(EnumTransactionTransactionTypeEnumTs)
-  @IsOptional()
-  @Field(() => EnumTransactionTransactionTypeEnumTs, {
-    nullable: true,
-  })
-  transactionTypeEnumTs?: "Option1";
-
-  @ApiProperty({
-    required: false,
-    type: StringNullableFilter,
-  })
-  @Type(() => StringNullableFilter)
-  @IsOptional()
-  @Field(() => StringNullableFilter, {
-    nullable: true,
-  })
-  transactionTypeTs?: StringNullableFilter;
-
-  @ApiProperty({
-    required: false,
-    type: StringNullableFilter,
-  })
-  @Type(() => StringNullableFilter)
-  @IsOptional()
-  @Field(() => StringNullableFilter, {
-    nullable: true,
-  })
-  transactionTypeTxn?: StringNullableFilter;
-
-  @ApiProperty({
-    required: false,
-    type: StringNullableFilter,
-  })
-  @Type(() => StringNullableFilter)
-  @IsOptional()
-  @Field(() => StringNullableFilter, {
-    nullable: true,
-  })
-  walletRelationTxn?: StringNullableFilter;
-
-  @ApiProperty({
-    required: false,
-    type: StringNullableFilter,
-  })
-  @Type(() => StringNullableFilter)
-  @IsOptional()
-  @Field(() => StringNullableFilter, {
-    nullable: true,
-  })
-  walletTxn?: StringNullableFilter;
+  wallet?: WalletWhereUniqueInput;
 }
 
 export { TransactionWhereInput as TransactionWhereInput };

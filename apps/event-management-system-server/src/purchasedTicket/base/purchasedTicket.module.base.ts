@@ -9,12 +9,10 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-import { registerEnumType } from "@nestjs/graphql";
-
-export enum EnumTransactionTransactionTypeEnumTs {
-  Option_1 = "Option1",
-}
-
-registerEnumType(EnumTransactionTransactionTypeEnumTs, {
-  name: "EnumTransactionTransactionTypeEnumTs",
-});
+import { Module } from "@nestjs/common";
+import { ACLModule } from "../../auth/acl.module";
+@Module({
+  imports: [ACLModule],
+  exports: [ACLModule],
+})
+export class PurchasedTicketModuleBase {}

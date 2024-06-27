@@ -6,12 +6,13 @@ import {
   ShowProps,
   DateField,
   TextField,
+  ReferenceField,
   ReferenceManyField,
   Datagrid,
-  ReferenceField,
 } from "react-admin";
 
 import { WALLET_TITLE_FIELD } from "./WalletTitle";
+import { USER_TITLE_FIELD } from "../user/UserTitle";
 
 export const WalletShow = (props: ShowProps): React.ReactElement => {
   return (
@@ -21,24 +22,24 @@ export const WalletShow = (props: ShowProps): React.ReactElement => {
         <TextField label="ID" source="id" />
         <TextField label="pin" source="pin" />
         <TextField label="totalAmount" source="totalAmount" />
-        <TextField label="transactions" source="transactions" />
         <DateField source="updatedAt" label="Updated At" />
-        <ReferenceManyField reference="User" target="walletId" label="Users">
+        <ReferenceField label="User" source="user.id" reference="User">
+          <TextField source={USER_TITLE_FIELD} />
+        </ReferenceField>
+        <ReferenceManyField
+          reference="Transaction"
+          target="walletId"
+          label="Transactions"
+        >
           <Datagrid rowClick="show">
+            <TextField label="amount" source="amount" />
             <DateField source="createdAt" label="Created At" />
-            <TextField label="Email" source="email" />
-            <TextField label="First Name" source="firstName" />
             <TextField label="ID" source="id" />
-            <TextField label="Last Name" source="lastName" />
-            <TextField label="mobile" source="mobile" />
-            <TextField label="nationality" source="nationality" />
-            <TextField label="nickName" source="nickName" />
-            <TextField label="preferences" source="preferences" />
-            <TextField label="Roles" source="roles" />
+            <TextField label="metadata" source="metadata" />
+            <TextField label="transactionType" source="transactionType" />
             <DateField source="updatedAt" label="Updated At" />
-            <TextField label="Username" source="username" />
             <ReferenceField
-              label="wallet"
+              label="Wallet"
               source="wallet.id"
               reference="Wallet"
             >

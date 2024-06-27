@@ -1,7 +1,7 @@
 import { Transaction as TTransaction } from "../api/transaction/Transaction";
 
-export const TRANSACTION_TITLE_FIELD = "transactionType";
+export const TRANSACTION_TITLE_FIELD = "id";
 
 export const TransactionTitle = (record: TTransaction): string => {
-  return record.transactionType?.toString() || String(record.id);
+  return record.id?.toString() || String(record.id);
 };

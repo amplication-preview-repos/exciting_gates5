@@ -11,17 +11,21 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
+
 import {
   IsInt,
   Min,
   Max,
   IsOptional,
   IsDate,
+  ValidateNested,
   IsNumber,
   IsString,
   MaxLength,
 } from "class-validator";
+
 import { Type } from "class-transformer";
+import { EventWhereUniqueInput } from "../../event/base/EventWhereUniqueInput";
 
 @InputType()
 class TicketTierUpdateInput {
@@ -98,6 +102,18 @@ class TicketTierUpdateInput {
     nullable: true,
   })
   endDateTs?: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => EventWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => EventWhereUniqueInput)
+  @IsOptional()
+  @Field(() => EventWhereUniqueInput, {
+    nullable: true,
+  })
+  event?: EventWhereUniqueInput | null;
 
   @ApiProperty({
     required: false,

@@ -268,5 +268,35 @@
     "resource": "Transaction",
     "action": "read:any",
     "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "PurchasedTicket",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "PurchasedTicket",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "PurchasedTicket",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "PurchasedTicket",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "user",
+    "resource": "PurchasedTicket",
+    "action": "read:any",
+    "attributes": "*"
   }
 ]

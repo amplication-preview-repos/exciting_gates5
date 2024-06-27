@@ -13,7 +13,8 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
-import { IsOptional, IsEnum } from "class-validator";
+import { IsOptional, ValidateNested, IsEnum } from "class-validator";
+import { PurchasedTicketListRelationFilter } from "../../purchasedTicket/base/PurchasedTicketListRelationFilter";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { EnumTicketStatus } from "./EnumTicketStatus";
 
@@ -29,6 +30,18 @@ class TicketWhereInput {
     nullable: true,
   })
   id?: StringFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => PurchasedTicketListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => PurchasedTicketListRelationFilter)
+  @IsOptional()
+  @Field(() => PurchasedTicketListRelationFilter, {
+    nullable: true,
+  })
+  purchasedTickets?: PurchasedTicketListRelationFilter;
 
   @ApiProperty({
     required: false,

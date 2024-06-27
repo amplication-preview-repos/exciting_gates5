@@ -26,6 +26,9 @@ import { Ticket } from "./Ticket";
 import { TicketFindManyArgs } from "./TicketFindManyArgs";
 import { TicketWhereUniqueInput } from "./TicketWhereUniqueInput";
 import { TicketUpdateInput } from "./TicketUpdateInput";
+import { PurchasedTicketFindManyArgs } from "../../purchasedTicket/base/PurchasedTicketFindManyArgs";
+import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
+import { PurchasedTicketWhereUniqueInput } from "../../purchasedTicket/base/PurchasedTicketWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -188,5 +191,122 @@ export class TicketControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/purchasedTickets")
+  @ApiNestedQuery(PurchasedTicketFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "PurchasedTicket",
+    action: "read",
+    possession: "any",
+  })
+  async findPurchasedTickets(
+    @common.Req() request: Request,
+    @common.Param() params: TicketWhereUniqueInput
+  ): Promise<PurchasedTicket[]> {
+    const query = plainToClass(PurchasedTicketFindManyArgs, request.query);
+    const results = await this.service.findPurchasedTickets(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+
+        event: {
+          select: {
+            id: true,
+          },
+        },
+
+        id: true,
+        qrCode: true,
+        status: true,
+
+        ticket: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/purchasedTickets")
+  @nestAccessControl.UseRoles({
+    resource: "Ticket",
+    action: "update",
+    possession: "any",
+  })
+  async connectPurchasedTickets(
+    @common.Param() params: TicketWhereUniqueInput,
+    @common.Body() body: PurchasedTicketWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      purchasedTickets: {
+        connect: body,
+      },
+    };
+    await this.service.updateTicket({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/purchasedTickets")
+  @nestAccessControl.UseRoles({
+    resource: "Ticket",
+    action: "update",
+    possession: "any",
+  })
+  async updatePurchasedTickets(
+    @common.Param() params: TicketWhereUniqueInput,
+    @common.Body() body: PurchasedTicketWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      purchasedTickets: {
+        set: body,
+      },
+    };
+    await this.service.updateTicket({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/purchasedTickets")
+  @nestAccessControl.UseRoles({
+    resource: "Ticket",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectPurchasedTickets(
+    @common.Param() params: TicketWhereUniqueInput,
+    @common.Body() body: PurchasedTicketWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      purchasedTickets: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateTicket({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

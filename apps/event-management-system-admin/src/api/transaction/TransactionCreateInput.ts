@@ -1,15 +1,9 @@
 import { InputJsonValue } from "../../types";
+import { WalletWhereUniqueInput } from "../wallet/WalletWhereUniqueInput";
 
 export type TransactionCreateInput = {
   amount?: number | null;
-  amountTxn?: number | null;
   metadata?: InputJsonValue;
-  metadataTs?: InputJsonValue;
-  metadataTxn?: InputJsonValue;
-  transactionType?: string | null;
-  transactionTypeEnumTs?: "Option1" | null;
-  transactionTypeTs?: string | null;
-  transactionTypeTxn?: string | null;
-  walletRelationTxn?: string | null;
-  walletTxn?: string | null;
+  transactionType?: "Withdraw" | "Deposit" | "Spend" | null;
+  wallet?: WalletWhereUniqueInput | null;
 };

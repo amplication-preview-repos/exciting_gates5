@@ -13,8 +13,9 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { IntNullableFilter } from "../../util/IntNullableFilter";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { IsOptional, ValidateNested } from "class-validator";
 import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
+import { EventWhereUniqueInput } from "../../event/base/EventWhereUniqueInput";
 import { StringFilter } from "../../util/StringFilter";
 import { FloatNullableFilter } from "../../util/FloatNullableFilter";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
@@ -86,6 +87,18 @@ class TicketTierWhereInput {
     nullable: true,
   })
   endDateTs?: DateTimeNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => EventWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => EventWhereUniqueInput)
+  @IsOptional()
+  @Field(() => EventWhereUniqueInput, {
+    nullable: true,
+  })
+  event?: EventWhereUniqueInput;
 
   @ApiProperty({
     required: false,

@@ -27,7 +27,6 @@ import { CreateSubAdminArgs } from "./CreateSubAdminArgs";
 import { UpdateSubAdminArgs } from "./UpdateSubAdminArgs";
 import { DeleteSubAdminArgs } from "./DeleteSubAdminArgs";
 import { Event } from "../../event/base/Event";
-import { User } from "../../user/base/User";
 import { SubAdminService } from "../subAdmin.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => SubAdmin)
@@ -102,12 +101,6 @@ export class SubAdminResolverBase {
               connect: args.data.event,
             }
           : undefined,
-
-        user: args.data.user
-          ? {
-              connect: args.data.user,
-            }
-          : undefined,
       },
     });
   }
@@ -131,12 +124,6 @@ export class SubAdminResolverBase {
           event: args.data.event
             ? {
                 connect: args.data.event,
-              }
-            : undefined,
-
-          user: args.data.user
-            ? {
-                connect: args.data.user,
               }
             : undefined,
         },
@@ -184,25 +171,6 @@ export class SubAdminResolverBase {
   })
   async getEvent(@graphql.Parent() parent: SubAdmin): Promise<Event | null> {
     const result = await this.service.getEvent(parent.id);
-
-    if (!result) {
-      return null;
-    }
-    return result;
-  }
-
-  @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.ResolveField(() => User, {
-    nullable: true,
-    name: "user",
-  })
-  @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "read",
-    possession: "any",
-  })
-  async getUser(@graphql.Parent() parent: SubAdmin): Promise<User | null> {
-    const result = await this.service.getUser(parent.id);
 
     if (!result) {
       return null;

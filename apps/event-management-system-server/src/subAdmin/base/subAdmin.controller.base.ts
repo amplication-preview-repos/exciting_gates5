@@ -57,12 +57,6 @@ export class SubAdminControllerBase {
               connect: data.event,
             }
           : undefined,
-
-        user: data.user
-          ? {
-              connect: data.user,
-            }
-          : undefined,
       },
       select: {
         createdAt: true,
@@ -73,15 +67,10 @@ export class SubAdminControllerBase {
           },
         },
 
+        eventRelation: true,
         id: true,
         isActive: true,
         updatedAt: true,
-
-        user: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
   }
@@ -111,15 +100,10 @@ export class SubAdminControllerBase {
           },
         },
 
+        eventRelation: true,
         id: true,
         isActive: true,
         updatedAt: true,
-
-        user: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
   }
@@ -150,15 +134,10 @@ export class SubAdminControllerBase {
           },
         },
 
+        eventRelation: true,
         id: true,
         isActive: true,
         updatedAt: true,
-
-        user: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
     if (result === null) {
@@ -196,12 +175,6 @@ export class SubAdminControllerBase {
                 connect: data.event,
               }
             : undefined,
-
-          user: data.user
-            ? {
-                connect: data.user,
-              }
-            : undefined,
         },
         select: {
           createdAt: true,
@@ -212,15 +185,10 @@ export class SubAdminControllerBase {
             },
           },
 
+          eventRelation: true,
           id: true,
           isActive: true,
           updatedAt: true,
-
-          user: {
-            select: {
-              id: true,
-            },
-          },
         },
       });
     } catch (error) {
@@ -259,15 +227,10 @@ export class SubAdminControllerBase {
             },
           },
 
+          eventRelation: true,
           id: true,
           isActive: true,
           updatedAt: true,
-
-          user: {
-            select: {
-              id: true,
-            },
-          },
         },
       });
     } catch (error) {

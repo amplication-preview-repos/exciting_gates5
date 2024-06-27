@@ -1,3 +1,5 @@
+import { Event } from "../event/Event";
+
 export type TicketTier = {
   amountOnSale: number | null;
   amountOnSaleTs: number | null;
@@ -6,6 +8,7 @@ export type TicketTier = {
   createdAt: Date;
   endDate: Date | null;
   endDateTs: Date | null;
+  event?: Event | null;
   id: string;
   purchasePrice: number | null;
   purchasePriceTs: number | null;

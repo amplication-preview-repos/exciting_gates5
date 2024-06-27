@@ -8,41 +8,44 @@ generator client {
 }
 
 model Wallet {
-  createdAt    DateTime @default(now())
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  pin          String?
-  totalAmount  Float?
-  transactions Json?
-  updatedAt    DateTime @updatedAt
-  users        User[]
+  createdAt    DateTime      @default(now())
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  pin          String
+  totalAmount  Float
+  transactions Transaction[]
+  updatedAt    DateTime      @updatedAt
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String        @unique @db.ObjectId
 }
 
 model Event {
-  approvedDate    DateTime?
-  coverImage      String?
-  createdAt       DateTime   @default(now())
-  description     String?
-  eventDate       DateTime?
-  eventLocation   String?
-  eventType       String?
-  guestPerformers Json?
-  id              String     @id @default(auto()) @map("_id") @db.ObjectId
-  isApproved      Boolean?
-  subAdmins       SubAdmin[]
-  ticketTiers     Json?
-  title           String?
-  trailer         String?
-  updatedAt       DateTime   @updatedAt
-  user            User?      @relation(fields: [userId], references: [id])
-  userId          String?    @db.ObjectId
+  approvedDate     DateTime?
+  coverImage       String
+  createdAt        DateTime          @default(now())
+  description      String
+  eventDate        DateTime
+  eventLocation    String?
+  eventType        String
+  guestPerformers  Json?
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
+  isApproved       Boolean?
+  purchasedTickets PurchasedTicket[]
+  subAdmins        SubAdmin[]
+  ticketTiers      TicketTier[]
+  title            String
+  trailer          String?
+  updatedAt        DateTime          @updatedAt
+  user             User              @relation(fields: [userId], references: [id])
+  userId           String            @db.ObjectId
 }
 
 model Ticket {
-  createdAt DateTime          @default(now())
-  id        String            @id @default(auto()) @map("_id") @db.ObjectId
-  qrCode    String?
-  status    EnumTicketStatus?
-  updatedAt DateTime          @updatedAt
+  createdAt        DateTime          @default(now())
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
+  purchasedTickets PurchasedTicket[]
+  qrCode           String?
+  status           EnumTicketStatus?
+  updatedAt        DateTime          @updatedAt
 }
 
 model Admin {
@@ -66,35 +69,33 @@ model Notification {
 }
 
 model User {
-  createdAt     DateTime       @default(now())
-  email         String?        @unique
-  events        Event[]
-  firstName     String?
-  id            String         @id @default(auto()) @map("_id") @db.ObjectId
-  lastName      String?
-  mobile        String?
-  nationality   String?
-  nickName      String?
-  notifications Notification[]
-  password      String
-  preferences   Json?
-  roles         Json
-  subAdmins     SubAdmin[]
-  updatedAt     DateTime       @updatedAt
-  username      String         @unique
-  wallet        Wallet?        @relation(fields: [walletId], references: [id])
-  walletId      String?        @db.ObjectId
+  createdAt        DateTime          @default(now())
+  email            String?           @unique
+  events           Event[]
+  firstName        String?
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
+  lastName         String?
+  mobile           String?
+  nationality      String?
+  nickName         String?
+  notifications    Notification[]
+  password         String
+  preferences      Json?
+  purchasedTickets PurchasedTicket[]
+  roles            Json
+  updatedAt        DateTime          @updatedAt
+  username         String            @unique
+  wallet           Wallet?
 }
 
 model SubAdmin {
-  createdAt DateTime @default(now())
-  event     Event?   @relation(fields: [eventId], references: [id])
-  eventId   String?  @db.ObjectId
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  isActive  Boolean?
-  updatedAt DateTime @updatedAt
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    String?  @db.ObjectId
+  createdAt     DateTime @default(now())
+  event         Event?   @relation(fields: [eventId], references: [id])
+  eventId       String?  @db.ObjectId
+  eventRelation String?
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  isActive      Boolean?
+  updatedAt     DateTime @updatedAt
 }
 
 model TicketTier {
@@ -105,6 +106,8 @@ model TicketTier {
   createdAt       DateTime  @default(now())
   endDate         DateTime?
   endDateTs       DateTime?
+  event           Event?    @relation(fields: [eventId], references: [id])
+  eventId         String?   @db.ObjectId
   id              String    @id @default(auto()) @map("_id") @db.ObjectId
   purchasePrice   Float?
   purchasePriceTs Float?
@@ -116,26 +119,40 @@ model TicketTier {
 }
 
 model Transaction {
-  amount                Float?
-  amountTxn             Float?
-  createdAt             DateTime                              @default(now())
-  id                    String                                @id @default(auto()) @map("_id") @db.ObjectId
-  metadata              Json?
-  metadataTs            Json?
-  metadataTxn           Json?
-  transactionType       String?
-  transactionTypeEnumTs EnumTransactionTransactionTypeEnumTs?
-  transactionTypeTs     String?
-  transactionTypeTxn    String?
-  updatedAt             DateTime                              @updatedAt
-  walletRelationTxn     String?
-  walletTxn             String?
+  amount          Float?
+  createdAt       DateTime                        @default(now())
+  id              String                          @id @default(auto()) @map("_id") @db.ObjectId
+  metadata        Json?
+  transactionType EnumTransactionTransactionType?
+  updatedAt       DateTime                        @updatedAt
+  wallet          Wallet?                         @relation(fields: [walletId], references: [id])
+  walletId        String?                         @db.ObjectId
+}
+
+model PurchasedTicket {
+  createdAt DateTime                   @default(now())
+  event     Event?                     @relation(fields: [eventId], references: [id])
+  eventId   String?                    @db.ObjectId
+  id        String                     @id @default(auto()) @map("_id") @db.ObjectId
+  qrCode    String?
+  status    EnumPurchasedTicketStatus?
+  ticket    Ticket?                    @relation(fields: [ticketId], references: [id])
+  ticketId  String?                    @db.ObjectId
+  updatedAt DateTime                   @updatedAt
+  user      User?                      @relation(fields: [userId], references: [id])
+  userId    String?                    @db.ObjectId
 }
 
 enum EnumTicketStatus {
   Option1
 }
 
-enum EnumTransactionTransactionTypeEnumTs {
+enum EnumTransactionTransactionType {
+  Withdraw
+  Deposit
+  Spend
+}
+
+enum EnumPurchasedTicketStatus {
   Option1
 }

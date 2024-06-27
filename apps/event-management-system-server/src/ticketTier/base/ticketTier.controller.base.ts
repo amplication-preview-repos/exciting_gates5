@@ -49,7 +49,15 @@ export class TicketTierControllerBase {
     @common.Body() data: TicketTierCreateInput
   ): Promise<TicketTier> {
     return await this.service.createTicketTier({
-      data: data,
+      data: {
+        ...data,
+
+        event: data.event
+          ? {
+              connect: data.event,
+            }
+          : undefined,
+      },
       select: {
         amountOnSale: true,
         amountOnSaleTs: true,
@@ -58,6 +66,13 @@ export class TicketTierControllerBase {
         createdAt: true,
         endDate: true,
         endDateTs: true,
+
+        event: {
+          select: {
+            id: true,
+          },
+        },
+
         id: true,
         purchasePrice: true,
         purchasePriceTs: true,
@@ -94,6 +109,13 @@ export class TicketTierControllerBase {
         createdAt: true,
         endDate: true,
         endDateTs: true,
+
+        event: {
+          select: {
+            id: true,
+          },
+        },
+
         id: true,
         purchasePrice: true,
         purchasePriceTs: true,
@@ -131,6 +153,13 @@ export class TicketTierControllerBase {
         createdAt: true,
         endDate: true,
         endDateTs: true,
+
+        event: {
+          select: {
+            id: true,
+          },
+        },
+
         id: true,
         purchasePrice: true,
         purchasePriceTs: true,
@@ -168,7 +197,15 @@ export class TicketTierControllerBase {
     try {
       return await this.service.updateTicketTier({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          event: data.event
+            ? {
+                connect: data.event,
+              }
+            : undefined,
+        },
         select: {
           amountOnSale: true,
           amountOnSaleTs: true,
@@ -177,6 +214,13 @@ export class TicketTierControllerBase {
           createdAt: true,
           endDate: true,
           endDateTs: true,
+
+          event: {
+            select: {
+              id: true,
+            },
+          },
+
           id: true,
           purchasePrice: true,
           purchasePriceTs: true,
@@ -222,6 +266,13 @@ export class TicketTierControllerBase {
           createdAt: true,
           endDate: true,
           endDateTs: true,
+
+          event: {
+            select: {
+              id: true,
+            },
+          },
+
           id: true,
           purchasePrice: true,
           purchasePriceTs: true,

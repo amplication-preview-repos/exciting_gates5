@@ -26,6 +26,7 @@ import { TransactionFindUniqueArgs } from "./TransactionFindUniqueArgs";
 import { CreateTransactionArgs } from "./CreateTransactionArgs";
 import { UpdateTransactionArgs } from "./UpdateTransactionArgs";
 import { DeleteTransactionArgs } from "./DeleteTransactionArgs";
+import { Wallet } from "../../wallet/base/Wallet";
 import { TransactionService } from "../transaction.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => Transaction)
@@ -92,7 +93,15 @@ export class TransactionResolverBase {
   ): Promise<Transaction> {
     return await this.service.createTransaction({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        wallet: args.data.wallet
+          ? {
+              connect: args.data.wallet,
+            }
+          : undefined,
+      },
     });
   }
 
@@ -109,7 +118,15 @@ export class TransactionResolverBase {
     try {
       return await this.service.updateTransaction({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          wallet: args.data.wallet
+            ? {
+                connect: args.data.wallet,
+              }
+            : undefined,
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -140,5 +157,26 @@ export class TransactionResolverBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => Wallet, {
+    nullable: true,
+    name: "wallet",
+  })
+  @nestAccessControl.UseRoles({
+    resource: "Wallet",
+    action: "read",
+    possession: "any",
+  })
+  async getWallet(
+    @graphql.Parent() parent: Transaction
+  ): Promise<Wallet | null> {
+    const result = await this.service.getWallet(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

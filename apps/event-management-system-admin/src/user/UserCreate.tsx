@@ -14,7 +14,7 @@ import {
 
 import { EventTitle } from "../event/EventTitle";
 import { NotificationTitle } from "../notification/NotificationTitle";
-import { SubAdminTitle } from "../subAdmin/SubAdminTitle";
+import { PurchasedTicketTitle } from "../purchasedTicket/PurchasedTicketTitle";
 import { WalletTitle } from "../wallet/WalletTitle";
 import { ROLES_OPTIONS } from "../user/RolesOptions";
 
@@ -46,20 +46,20 @@ export const UserCreate = (props: CreateProps): React.ReactElement => {
         </ReferenceArrayInput>
         <PasswordInput label="Password" source="password" />
         <div />
+        <ReferenceArrayInput
+          source="purchasedTickets"
+          reference="PurchasedTicket"
+          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
+          format={(value: any) => value && value.map((v: any) => v.id)}
+        >
+          <SelectArrayInput optionText={PurchasedTicketTitle} />
+        </ReferenceArrayInput>
         <SelectArrayInput
           source="roles"
           choices={ROLES_OPTIONS}
           optionText="label"
           optionValue="value"
         />
-        <ReferenceArrayInput
-          source="subAdmins"
-          reference="SubAdmin"
-          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
-          format={(value: any) => value && value.map((v: any) => v.id)}
-        >
-          <SelectArrayInput optionText={SubAdminTitle} />
-        </ReferenceArrayInput>
         <TextInput label="Username" source="username" />
         <ReferenceInput source="wallet.id" reference="Wallet" label="wallet">
           <SelectInput optionText={WalletTitle} />

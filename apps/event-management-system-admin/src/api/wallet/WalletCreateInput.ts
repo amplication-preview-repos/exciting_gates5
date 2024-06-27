@@ -1,9 +1,9 @@
-import { InputJsonValue } from "../../types";
-import { UserCreateNestedManyWithoutWalletsInput } from "./UserCreateNestedManyWithoutWalletsInput";
+import { TransactionCreateNestedManyWithoutWalletsInput } from "./TransactionCreateNestedManyWithoutWalletsInput";
+import { UserWhereUniqueInput } from "../user/UserWhereUniqueInput";
 
 export type WalletCreateInput = {
-  pin?: string | null;
-  totalAmount?: number | null;
-  transactions?: InputJsonValue;
-  users?: UserCreateNestedManyWithoutWalletsInput;
+  pin: string;
+  totalAmount: number;
+  transactions?: TransactionCreateNestedManyWithoutWalletsInput;
+  user: UserWhereUniqueInput;
 };

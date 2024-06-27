@@ -14,11 +14,13 @@ import { ApiProperty } from "@nestjs/swagger";
 import {
   IsDate,
   IsString,
-  MaxLength,
+  ValidateNested,
   IsOptional,
+  MaxLength,
   IsEnum,
 } from "class-validator";
 import { Type } from "class-transformer";
+import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
 import { EnumTicketStatus } from "./EnumTicketStatus";
 
 @ObjectType()
@@ -38,6 +40,15 @@ class Ticket {
   @IsString()
   @Field(() => String)
   id!: string;
+
+  @ApiProperty({
+    required: false,
+    type: () => [PurchasedTicket],
+  })
+  @ValidateNested()
+  @Type(() => PurchasedTicket)
+  @IsOptional()
+  purchasedTickets?: Array<PurchasedTicket>;
 
   @ApiProperty({
     required: false,

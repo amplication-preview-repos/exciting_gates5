@@ -23,7 +23,9 @@ import { Type } from "class-transformer";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
+import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
 import { SubAdmin } from "../../subAdmin/base/SubAdmin";
+import { TicketTier } from "../../ticketTier/base/TicketTier";
 import { User } from "../../user/base/User";
 
 @ObjectType()
@@ -40,16 +42,13 @@ class Event {
   approvedDate!: Date | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
   @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  coverImage!: string | null;
+  @Field(() => String)
+  coverImage!: string;
 
   @ApiProperty({
     required: true,
@@ -60,27 +59,21 @@ class Event {
   createdAt!: Date;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
   @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  description!: string | null;
+  @Field(() => String)
+  description!: string;
 
   @ApiProperty({
-    required: false,
+    required: true,
   })
   @IsDate()
   @Type(() => Date)
-  @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
-  eventDate!: Date | null;
+  @Field(() => Date)
+  eventDate!: Date;
 
   @ApiProperty({
     required: false,
@@ -95,16 +88,13 @@ class Event {
   eventLocation!: string | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
   @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  eventType!: string | null;
+  @Field(() => String)
+  eventType!: string;
 
   @ApiProperty({
     required: false,
@@ -137,6 +127,15 @@ class Event {
 
   @ApiProperty({
     required: false,
+    type: () => [PurchasedTicket],
+  })
+  @ValidateNested()
+  @Type(() => PurchasedTicket)
+  @IsOptional()
+  purchasedTickets?: Array<PurchasedTicket>;
+
+  @ApiProperty({
+    required: false,
     type: () => [SubAdmin],
   })
   @ValidateNested()
@@ -146,25 +145,21 @@ class Event {
 
   @ApiProperty({
     required: false,
+    type: () => [TicketTier],
   })
-  @IsJSONValue()
+  @ValidateNested()
+  @Type(() => TicketTier)
   @IsOptional()
-  @Field(() => GraphQLJSON, {
-    nullable: true,
-  })
-  ticketTiers!: JsonValue;
+  ticketTiers?: Array<TicketTier>;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
   @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  title!: string | null;
+  @Field(() => String)
+  title!: string;
 
   @ApiProperty({
     required: false,
@@ -187,13 +182,12 @@ class Event {
   updatedAt!: Date;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => User,
   })
   @ValidateNested()
   @Type(() => User)
-  @IsOptional()
-  user?: User | null;
+  user?: User;
 }
 
 export { Event as Event };

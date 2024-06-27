@@ -1,7 +1,7 @@
 import { Event } from "../event/Event";
 import { Notification } from "../notification/Notification";
 import { JsonValue } from "type-fest";
-import { SubAdmin } from "../subAdmin/SubAdmin";
+import { PurchasedTicket } from "../purchasedTicket/PurchasedTicket";
 import { Wallet } from "../wallet/Wallet";
 
 export type User = {
@@ -16,8 +16,8 @@ export type User = {
   nickName: string | null;
   notifications?: Array<Notification>;
   preferences: JsonValue;
+  purchasedTickets?: Array<PurchasedTicket>;
   roles: JsonValue;
-  subAdmins?: Array<SubAdmin>;
   updatedAt: Date;
   username: string;
   wallet?: Wallet | null;

@@ -19,53 +19,29 @@ const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
   amount: 42.42,
-  amountTxn: 42.42,
   createdAt: new Date(),
   id: "exampleId",
-  transactionType: "exampleTransactionType",
-  transactionTypeTs: "exampleTransactionTypeTs",
-  transactionTypeTxn: "exampleTransactionTypeTxn",
   updatedAt: new Date(),
-  walletRelationTxn: "exampleWalletRelationTxn",
-  walletTxn: "exampleWalletTxn",
 };
 const CREATE_RESULT = {
   amount: 42.42,
-  amountTxn: 42.42,
   createdAt: new Date(),
   id: "exampleId",
-  transactionType: "exampleTransactionType",
-  transactionTypeTs: "exampleTransactionTypeTs",
-  transactionTypeTxn: "exampleTransactionTypeTxn",
   updatedAt: new Date(),
-  walletRelationTxn: "exampleWalletRelationTxn",
-  walletTxn: "exampleWalletTxn",
 };
 const FIND_MANY_RESULT = [
   {
     amount: 42.42,
-    amountTxn: 42.42,
     createdAt: new Date(),
     id: "exampleId",
-    transactionType: "exampleTransactionType",
-    transactionTypeTs: "exampleTransactionTypeTs",
-    transactionTypeTxn: "exampleTransactionTypeTxn",
     updatedAt: new Date(),
-    walletRelationTxn: "exampleWalletRelationTxn",
-    walletTxn: "exampleWalletTxn",
   },
 ];
 const FIND_ONE_RESULT = {
   amount: 42.42,
-  amountTxn: 42.42,
   createdAt: new Date(),
   id: "exampleId",
-  transactionType: "exampleTransactionType",
-  transactionTypeTs: "exampleTransactionTypeTs",
-  transactionTypeTxn: "exampleTransactionTypeTxn",
   updatedAt: new Date(),
-  walletRelationTxn: "exampleWalletRelationTxn",
-  walletTxn: "exampleWalletTxn",
 };
 
 const service = {

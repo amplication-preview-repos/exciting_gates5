@@ -5,7 +5,9 @@ import {
   ShowProps,
   TextField,
   DateField,
+  ReferenceField,
 } from "react-admin";
+import { EVENT_TITLE_FIELD } from "../event/EventTitle";
 
 export const TicketTierShow = (props: ShowProps): React.ReactElement => {
   return (
@@ -18,6 +20,9 @@ export const TicketTierShow = (props: ShowProps): React.ReactElement => {
         <DateField source="createdAt" label="Created At" />
         <TextField label="endDate" source="endDate" />
         <TextField label="endDate_TS" source="endDateTs" />
+        <ReferenceField label="Event" source="event.id" reference="Event">
+          <TextField source={EVENT_TITLE_FIELD} />
+        </ReferenceField>
         <TextField label="ID" source="id" />
         <TextField label="purchasePrice" source="purchasePrice" />
         <TextField label="purchasePrice_TS" source="purchasePriceTs" />

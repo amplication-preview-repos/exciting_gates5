@@ -1,7 +1,7 @@
 import { EventCreateNestedManyWithoutUsersInput } from "./EventCreateNestedManyWithoutUsersInput";
 import { NotificationCreateNestedManyWithoutUsersInput } from "./NotificationCreateNestedManyWithoutUsersInput";
 import { InputJsonValue } from "../../types";
-import { SubAdminCreateNestedManyWithoutUsersInput } from "./SubAdminCreateNestedManyWithoutUsersInput";
+import { PurchasedTicketCreateNestedManyWithoutUsersInput } from "./PurchasedTicketCreateNestedManyWithoutUsersInput";
 import { WalletWhereUniqueInput } from "../wallet/WalletWhereUniqueInput";
 
 export type UserCreateInput = {
@@ -15,8 +15,8 @@ export type UserCreateInput = {
   notifications?: NotificationCreateNestedManyWithoutUsersInput;
   password: string;
   preferences?: InputJsonValue;
+  purchasedTickets?: PurchasedTicketCreateNestedManyWithoutUsersInput;
   roles: InputJsonValue;
-  subAdmins?: SubAdminCreateNestedManyWithoutUsersInput;
   username: string;
   wallet?: WalletWhereUniqueInput | null;
 };

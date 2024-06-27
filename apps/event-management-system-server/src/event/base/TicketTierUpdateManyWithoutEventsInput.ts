@@ -10,37 +10,37 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { InputType, Field } from "@nestjs/graphql";
-import { SubAdminWhereUniqueInput } from "../../subAdmin/base/SubAdminWhereUniqueInput";
+import { TicketTierWhereUniqueInput } from "../../ticketTier/base/TicketTierWhereUniqueInput";
 import { ApiProperty } from "@nestjs/swagger";
 
 @InputType()
-class SubAdminUpdateManyWithoutUsersInput {
-  @Field(() => [SubAdminWhereUniqueInput], {
+class TicketTierUpdateManyWithoutEventsInput {
+  @Field(() => [TicketTierWhereUniqueInput], {
     nullable: true,
   })
   @ApiProperty({
     required: false,
-    type: () => [SubAdminWhereUniqueInput],
+    type: () => [TicketTierWhereUniqueInput],
   })
-  connect?: Array<SubAdminWhereUniqueInput>;
+  connect?: Array<TicketTierWhereUniqueInput>;
 
-  @Field(() => [SubAdminWhereUniqueInput], {
+  @Field(() => [TicketTierWhereUniqueInput], {
     nullable: true,
   })
   @ApiProperty({
     required: false,
-    type: () => [SubAdminWhereUniqueInput],
+    type: () => [TicketTierWhereUniqueInput],
   })
-  disconnect?: Array<SubAdminWhereUniqueInput>;
+  disconnect?: Array<TicketTierWhereUniqueInput>;
 
-  @Field(() => [SubAdminWhereUniqueInput], {
+  @Field(() => [TicketTierWhereUniqueInput], {
     nullable: true,
   })
   @ApiProperty({
     required: false,
-    type: () => [SubAdminWhereUniqueInput],
+    type: () => [TicketTierWhereUniqueInput],
   })
-  set?: Array<SubAdminWhereUniqueInput>;
+  set?: Array<TicketTierWhereUniqueInput>;
 }
 
-export { SubAdminUpdateManyWithoutUsersInput as SubAdminUpdateManyWithoutUsersInput };
+export { TicketTierUpdateManyWithoutEventsInput as TicketTierUpdateManyWithoutEventsInput };

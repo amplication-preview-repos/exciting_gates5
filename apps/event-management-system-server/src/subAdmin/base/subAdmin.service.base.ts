@@ -10,12 +10,10 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
-
 import {
   Prisma,
   SubAdmin as PrismaSubAdmin,
   Event as PrismaEvent,
-  User as PrismaUser,
 } from "@prisma/client";
 
 export class SubAdminServiceBase {
@@ -57,13 +55,5 @@ export class SubAdminServiceBase {
         where: { id: parentId },
       })
       .event();
-  }
-
-  async getUser(parentId: string): Promise<PrismaUser | null> {
-    return this.prisma.subAdmin
-      .findUnique({
-        where: { id: parentId },
-      })
-      .user();
   }
 }

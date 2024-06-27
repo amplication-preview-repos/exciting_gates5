@@ -23,7 +23,7 @@ import { NotificationUpdateManyWithoutUsersInput } from "./NotificationUpdateMan
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
-import { SubAdminUpdateManyWithoutUsersInput } from "./SubAdminUpdateManyWithoutUsersInput";
+import { PurchasedTicketUpdateManyWithoutUsersInput } from "./PurchasedTicketUpdateManyWithoutUsersInput";
 import { WalletWhereUniqueInput } from "../../wallet/base/WalletWhereUniqueInput";
 
 @InputType()
@@ -146,6 +146,18 @@ class UserUpdateInput {
 
   @ApiProperty({
     required: false,
+    type: () => PurchasedTicketUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => PurchasedTicketUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => PurchasedTicketUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  purchasedTickets?: PurchasedTicketUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
   })
   @IsJSONValue()
   @IsOptional()
@@ -153,18 +165,6 @@ class UserUpdateInput {
     nullable: true,
   })
   roles?: InputJsonValue;
-
-  @ApiProperty({
-    required: false,
-    type: () => SubAdminUpdateManyWithoutUsersInput,
-  })
-  @ValidateNested()
-  @Type(() => SubAdminUpdateManyWithoutUsersInput)
-  @IsOptional()
-  @Field(() => SubAdminUpdateManyWithoutUsersInput, {
-    nullable: true,
-  })
-  subAdmins?: SubAdminUpdateManyWithoutUsersInput;
 
   @ApiProperty({
     required: false,

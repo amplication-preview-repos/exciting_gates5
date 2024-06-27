@@ -18,7 +18,7 @@ import { EventListRelationFilter } from "../../event/base/EventListRelationFilte
 import { StringFilter } from "../../util/StringFilter";
 import { NotificationListRelationFilter } from "../../notification/base/NotificationListRelationFilter";
 import { JsonFilter } from "../../util/JsonFilter";
-import { SubAdminListRelationFilter } from "../../subAdmin/base/SubAdminListRelationFilter";
+import { PurchasedTicketListRelationFilter } from "../../purchasedTicket/base/PurchasedTicketListRelationFilter";
 import { WalletWhereUniqueInput } from "../../wallet/base/WalletWhereUniqueInput";
 
 @InputType()
@@ -137,15 +137,15 @@ class UserWhereInput {
 
   @ApiProperty({
     required: false,
-    type: () => SubAdminListRelationFilter,
+    type: () => PurchasedTicketListRelationFilter,
   })
   @ValidateNested()
-  @Type(() => SubAdminListRelationFilter)
+  @Type(() => PurchasedTicketListRelationFilter)
   @IsOptional()
-  @Field(() => SubAdminListRelationFilter, {
+  @Field(() => PurchasedTicketListRelationFilter, {
     nullable: true,
   })
-  subAdmins?: SubAdminListRelationFilter;
+  purchasedTickets?: PurchasedTicketListRelationFilter;
 
   @ApiProperty({
     required: false,

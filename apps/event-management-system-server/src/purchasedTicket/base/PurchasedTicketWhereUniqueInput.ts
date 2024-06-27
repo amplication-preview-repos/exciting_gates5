@@ -10,19 +10,18 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { InputType, Field } from "@nestjs/graphql";
-import { SubAdminWhereUniqueInput } from "../../subAdmin/base/SubAdminWhereUniqueInput";
 import { ApiProperty } from "@nestjs/swagger";
+import { IsString } from "class-validator";
 
 @InputType()
-class SubAdminCreateNestedManyWithoutUsersInput {
-  @Field(() => [SubAdminWhereUniqueInput], {
-    nullable: true,
-  })
+class PurchasedTicketWhereUniqueInput {
   @ApiProperty({
-    required: false,
-    type: () => [SubAdminWhereUniqueInput],
+    required: true,
+    type: String,
   })
-  connect?: Array<SubAdminWhereUniqueInput>;
+  @IsString()
+  @Field(() => String)
+  id!: string;
 }
 
-export { SubAdminCreateNestedManyWithoutUsersInput as SubAdminCreateNestedManyWithoutUsersInput };
+export { PurchasedTicketWhereUniqueInput as PurchasedTicketWhereUniqueInput };

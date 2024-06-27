@@ -16,7 +16,7 @@ import {
   User as PrismaUser,
   Event as PrismaEvent,
   Notification as PrismaNotification,
-  SubAdmin as PrismaSubAdmin,
+  PurchasedTicket as PrismaPurchasedTicket,
   Wallet as PrismaWallet,
 } from "@prisma/client";
 
@@ -91,15 +91,15 @@ export class UserServiceBase {
       .notifications(args);
   }
 
-  async findSubAdmins(
+  async findPurchasedTickets(
     parentId: string,
-    args: Prisma.SubAdminFindManyArgs
-  ): Promise<PrismaSubAdmin[]> {
+    args: Prisma.PurchasedTicketFindManyArgs
+  ): Promise<PrismaPurchasedTicket[]> {
     return this.prisma.user
       .findUniqueOrThrow({
         where: { id: parentId },
       })
-      .subAdmins(args);
+      .purchasedTickets(args);
   }
 
   async getWallet(parentId: string): Promise<PrismaWallet | null> {

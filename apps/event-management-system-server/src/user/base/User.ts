@@ -24,7 +24,7 @@ import { Notification } from "../../notification/base/Notification";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
-import { SubAdmin } from "../../subAdmin/base/SubAdmin";
+import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
 import { Wallet } from "../../wallet/base/Wallet";
 
 @ObjectType()
@@ -145,20 +145,20 @@ class User {
   preferences!: JsonValue;
 
   @ApiProperty({
+    required: false,
+    type: () => [PurchasedTicket],
+  })
+  @ValidateNested()
+  @Type(() => PurchasedTicket)
+  @IsOptional()
+  purchasedTickets?: Array<PurchasedTicket>;
+
+  @ApiProperty({
     required: true,
   })
   @IsJSONValue()
   @Field(() => GraphQLJSON)
   roles!: JsonValue;
-
-  @ApiProperty({
-    required: false,
-    type: () => [SubAdmin],
-  })
-  @ValidateNested()
-  @Type(() => SubAdmin)
-  @IsOptional()
-  subAdmins?: Array<SubAdmin>;
 
   @ApiProperty({
     required: true,

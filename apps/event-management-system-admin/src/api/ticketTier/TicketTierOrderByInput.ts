@@ -8,6 +8,7 @@ export type TicketTierOrderByInput = {
   createdAt?: SortOrder;
   endDate?: SortOrder;
   endDateTs?: SortOrder;
+  eventId?: SortOrder;
   id?: SortOrder;
   purchasePrice?: SortOrder;
   purchasePriceTs?: SortOrder;

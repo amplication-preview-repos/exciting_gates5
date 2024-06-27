@@ -16,17 +16,15 @@ import {
   IsDate,
   IsString,
   MaxLength,
-  IsOptional,
   IsNumber,
   Min,
   Max,
   ValidateNested,
+  IsOptional,
 } from "class-validator";
 
 import { Type } from "class-transformer";
-import { IsJSONValue } from "../../validators";
-import { GraphQLJSON } from "graphql-type-json";
-import { JsonValue } from "type-fest";
+import { Transaction } from "../../transaction/base/Transaction";
 import { User } from "../../user/base/User";
 
 @ObjectType()
@@ -48,39 +46,32 @@ class Wallet {
   id!: string;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
   @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  pin!: string | null;
+  @Field(() => String)
+  pin!: string;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: Number,
   })
   @IsNumber()
   @Min(-999999999)
   @Max(999999999)
-  @IsOptional()
-  @Field(() => Number, {
-    nullable: true,
-  })
-  totalAmount!: number | null;
+  @Field(() => Number)
+  totalAmount!: number;
 
   @ApiProperty({
     required: false,
+    type: () => [Transaction],
   })
-  @IsJSONValue()
+  @ValidateNested()
+  @Type(() => Transaction)
   @IsOptional()
-  @Field(() => GraphQLJSON, {
-    nullable: true,
-  })
-  transactions!: JsonValue;
+  transactions?: Array<Transaction>;
 
   @ApiProperty({
     required: true,
@@ -91,13 +82,12 @@ class Wallet {
   updatedAt!: Date;
 
   @ApiProperty({
-    required: false,
-    type: () => [User],
+    required: true,
+    type: () => User,
   })
   @ValidateNested()
   @Type(() => User)
-  @IsOptional()
-  users?: Array<User>;
+  user?: User;
 }
 
 export { Wallet as Wallet };

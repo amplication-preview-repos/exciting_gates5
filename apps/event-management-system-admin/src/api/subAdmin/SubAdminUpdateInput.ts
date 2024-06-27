@@ -1,8 +1,7 @@
 import { EventWhereUniqueInput } from "../event/EventWhereUniqueInput";
-import { UserWhereUniqueInput } from "../user/UserWhereUniqueInput";
 
 export type SubAdminUpdateInput = {
   event?: EventWhereUniqueInput | null;
+  eventRelation?: string | null;
   isActive?: boolean | null;
-  user?: UserWhereUniqueInput | null;
 };

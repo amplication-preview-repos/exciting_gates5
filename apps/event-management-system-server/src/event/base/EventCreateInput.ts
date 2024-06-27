@@ -23,7 +23,9 @@ import { Type } from "class-transformer";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
+import { PurchasedTicketCreateNestedManyWithoutEventsInput } from "./PurchasedTicketCreateNestedManyWithoutEventsInput";
 import { SubAdminCreateNestedManyWithoutEventsInput } from "./SubAdminCreateNestedManyWithoutEventsInput";
+import { TicketTierCreateNestedManyWithoutEventsInput } from "./TicketTierCreateNestedManyWithoutEventsInput";
 import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
@@ -40,39 +42,30 @@ class EventCreateInput {
   approvedDate?: Date | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
   @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  coverImage?: string | null;
+  @Field(() => String)
+  coverImage!: string;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
   @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  description?: string | null;
+  @Field(() => String)
+  description!: string;
 
   @ApiProperty({
-    required: false,
+    required: true,
   })
   @IsDate()
   @Type(() => Date)
-  @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
-  eventDate?: Date | null;
+  @Field(() => Date)
+  eventDate!: Date;
 
   @ApiProperty({
     required: false,
@@ -87,16 +80,13 @@ class EventCreateInput {
   eventLocation?: string | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
   @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  eventType?: string | null;
+  @Field(() => String)
+  eventType!: string;
 
   @ApiProperty({
     required: false,
@@ -121,6 +111,18 @@ class EventCreateInput {
 
   @ApiProperty({
     required: false,
+    type: () => PurchasedTicketCreateNestedManyWithoutEventsInput,
+  })
+  @ValidateNested()
+  @Type(() => PurchasedTicketCreateNestedManyWithoutEventsInput)
+  @IsOptional()
+  @Field(() => PurchasedTicketCreateNestedManyWithoutEventsInput, {
+    nullable: true,
+  })
+  purchasedTickets?: PurchasedTicketCreateNestedManyWithoutEventsInput;
+
+  @ApiProperty({
+    required: false,
     type: () => SubAdminCreateNestedManyWithoutEventsInput,
   })
   @ValidateNested()
@@ -133,25 +135,24 @@ class EventCreateInput {
 
   @ApiProperty({
     required: false,
+    type: () => TicketTierCreateNestedManyWithoutEventsInput,
   })
-  @IsJSONValue()
+  @ValidateNested()
+  @Type(() => TicketTierCreateNestedManyWithoutEventsInput)
   @IsOptional()
-  @Field(() => GraphQLJSON, {
+  @Field(() => TicketTierCreateNestedManyWithoutEventsInput, {
     nullable: true,
   })
-  ticketTiers?: InputJsonValue;
+  ticketTiers?: TicketTierCreateNestedManyWithoutEventsInput;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
   @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  title?: string | null;
+  @Field(() => String)
+  title!: string;
 
   @ApiProperty({
     required: false,
@@ -166,16 +167,13 @@ class EventCreateInput {
   trailer?: string | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => UserWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => UserWhereUniqueInput)
-  @IsOptional()
-  @Field(() => UserWhereUniqueInput, {
-    nullable: true,
-  })
-  user?: UserWhereUniqueInput | null;
+  @Field(() => UserWhereUniqueInput)
+  user!: UserWhereUniqueInput;
 }
 
 export { EventCreateInput as EventCreateInput };

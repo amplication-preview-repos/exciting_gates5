@@ -26,7 +26,8 @@ import { WalletFindUniqueArgs } from "./WalletFindUniqueArgs";
 import { CreateWalletArgs } from "./CreateWalletArgs";
 import { UpdateWalletArgs } from "./UpdateWalletArgs";
 import { DeleteWalletArgs } from "./DeleteWalletArgs";
-import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
+import { TransactionFindManyArgs } from "../../transaction/base/TransactionFindManyArgs";
+import { Transaction } from "../../transaction/base/Transaction";
 import { User } from "../../user/base/User";
 import { WalletService } from "../wallet.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
@@ -90,7 +91,13 @@ export class WalletResolverBase {
   async createWallet(@graphql.Args() args: CreateWalletArgs): Promise<Wallet> {
     return await this.service.createWallet({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        user: {
+          connect: args.data.user,
+        },
+      },
     });
   }
 
@@ -107,7 +114,13 @@ export class WalletResolverBase {
     try {
       return await this.service.updateWallet({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          user: {
+            connect: args.data.user,
+          },
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -141,22 +154,41 @@ export class WalletResolverBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.ResolveField(() => [User], { name: "users" })
+  @graphql.ResolveField(() => [Transaction], { name: "transactions" })
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Transaction",
     action: "read",
     possession: "any",
   })
-  async findUsers(
+  async findTransactions(
     @graphql.Parent() parent: Wallet,
-    @graphql.Args() args: UserFindManyArgs
-  ): Promise<User[]> {
-    const results = await this.service.findUsers(parent.id, args);
+    @graphql.Args() args: TransactionFindManyArgs
+  ): Promise<Transaction[]> {
+    const results = await this.service.findTransactions(parent.id, args);
 
     if (!results) {
       return [];
     }
 
     return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => User, {
+    nullable: true,
+    name: "user",
+  })
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "read",
+    possession: "any",
+  })
+  async getUser(@graphql.Parent() parent: Wallet): Promise<User | null> {
+    const result = await this.service.getUser(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

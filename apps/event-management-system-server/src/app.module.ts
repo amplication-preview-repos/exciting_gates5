@@ -8,6 +8,7 @@ import { UserModule } from "./user/user.module";
 import { SubAdminModule } from "./subAdmin/subAdmin.module";
 import { TicketTierModule } from "./ticketTier/ticketTier.module";
 import { TransactionModule } from "./transaction/transaction.module";
+import { PurchasedTicketModule } from "./purchasedTicket/purchasedTicket.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { SecretsManagerModule } from "./providers/secrets/secretsManager.module";
@@ -34,6 +35,7 @@ import { AuthModule } from "./auth/auth.module";
     SubAdminModule,
     TicketTierModule,
     TransactionModule,
+    PurchasedTicketModule,
     HealthModule,
     PrismaModule,
     SecretsManagerModule,

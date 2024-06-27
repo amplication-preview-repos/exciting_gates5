@@ -30,8 +30,8 @@ import { EventFindManyArgs } from "../../event/base/EventFindManyArgs";
 import { Event } from "../../event/base/Event";
 import { NotificationFindManyArgs } from "../../notification/base/NotificationFindManyArgs";
 import { Notification } from "../../notification/base/Notification";
-import { SubAdminFindManyArgs } from "../../subAdmin/base/SubAdminFindManyArgs";
-import { SubAdmin } from "../../subAdmin/base/SubAdmin";
+import { PurchasedTicketFindManyArgs } from "../../purchasedTicket/base/PurchasedTicketFindManyArgs";
+import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
 import { Wallet } from "../../wallet/base/Wallet";
 import { UserService } from "../user.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
@@ -196,17 +196,17 @@ export class UserResolverBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.ResolveField(() => [SubAdmin], { name: "subAdmins" })
+  @graphql.ResolveField(() => [PurchasedTicket], { name: "purchasedTickets" })
   @nestAccessControl.UseRoles({
-    resource: "SubAdmin",
+    resource: "PurchasedTicket",
     action: "read",
     possession: "any",
   })
-  async findSubAdmins(
+  async findPurchasedTickets(
     @graphql.Parent() parent: User,
-    @graphql.Args() args: SubAdminFindManyArgs
-  ): Promise<SubAdmin[]> {
-    const results = await this.service.findSubAdmins(parent.id, args);
+    @graphql.Args() args: PurchasedTicketFindManyArgs
+  ): Promise<PurchasedTicket[]> {
+    const results = await this.service.findPurchasedTickets(parent.id, args);
 
     if (!results) {
       return [];

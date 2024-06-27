@@ -72,7 +72,7 @@ class WalletOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  transactions?: SortOrder;
+  updatedAt?: SortOrder;
 
   @ApiProperty({
     required: false,
@@ -83,7 +83,7 @@ class WalletOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  updatedAt?: SortOrder;
+  userId?: SortOrder;
 }
 
 export { WalletOrderByInput as WalletOrderByInput };

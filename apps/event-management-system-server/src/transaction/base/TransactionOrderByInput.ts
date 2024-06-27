@@ -39,17 +39,6 @@ class TransactionOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  amountTxn?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
   createdAt?: SortOrder;
 
   @ApiProperty({
@@ -83,62 +72,7 @@ class TransactionOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  metadataTs?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  metadataTxn?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
   transactionType?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  transactionTypeEnumTs?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  transactionTypeTs?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  transactionTypeTxn?: SortOrder;
 
   @ApiProperty({
     required: false,
@@ -160,18 +94,7 @@ class TransactionOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  walletRelationTxn?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  walletTxn?: SortOrder;
+  walletId?: SortOrder;
 }
 
 export { TransactionOrderByInput as TransactionOrderByInput };

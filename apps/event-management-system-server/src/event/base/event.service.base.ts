@@ -14,7 +14,9 @@ import { PrismaService } from "../../prisma/prisma.service";
 import {
   Prisma,
   Event as PrismaEvent,
+  PurchasedTicket as PrismaPurchasedTicket,
   SubAdmin as PrismaSubAdmin,
+  TicketTier as PrismaTicketTier,
   User as PrismaUser,
 } from "@prisma/client";
 
@@ -41,6 +43,17 @@ export class EventServiceBase {
     return this.prisma.event.delete(args);
   }
 
+  async findPurchasedTickets(
+    parentId: string,
+    args: Prisma.PurchasedTicketFindManyArgs
+  ): Promise<PrismaPurchasedTicket[]> {
+    return this.prisma.event
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .purchasedTickets(args);
+  }
+
   async findSubAdmins(
     parentId: string,
     args: Prisma.SubAdminFindManyArgs
@@ -50,6 +63,17 @@ export class EventServiceBase {
         where: { id: parentId },
       })
       .subAdmins(args);
+  }
+
+  async findTicketTiers(
+    parentId: string,
+    args: Prisma.TicketTierFindManyArgs
+  ): Promise<PrismaTicketTier[]> {
+    return this.prisma.event
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .ticketTiers(args);
   }
 
   async getUser(parentId: string): Promise<PrismaUser | null> {

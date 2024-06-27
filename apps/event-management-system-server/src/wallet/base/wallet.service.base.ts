@@ -10,9 +10,11 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
+
 import {
   Prisma,
   Wallet as PrismaWallet,
+  Transaction as PrismaTransaction,
   User as PrismaUser,
 } from "@prisma/client";
 
@@ -41,14 +43,22 @@ export class WalletServiceBase {
     return this.prisma.wallet.delete(args);
   }
 
-  async findUsers(
+  async findTransactions(
     parentId: string,
-    args: Prisma.UserFindManyArgs
-  ): Promise<PrismaUser[]> {
+    args: Prisma.TransactionFindManyArgs
+  ): Promise<PrismaTransaction[]> {
     return this.prisma.wallet
       .findUniqueOrThrow({
         where: { id: parentId },
       })
-      .users(args);
+      .transactions(args);
+  }
+
+  async getUser(parentId: string): Promise<PrismaUser | null> {
+    return this.prisma.wallet
+      .findUnique({
+        where: { id: parentId },
+      })
+      .user();
   }
 }

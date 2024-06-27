@@ -26,6 +26,8 @@ import { TicketFindUniqueArgs } from "./TicketFindUniqueArgs";
 import { CreateTicketArgs } from "./CreateTicketArgs";
 import { UpdateTicketArgs } from "./UpdateTicketArgs";
 import { DeleteTicketArgs } from "./DeleteTicketArgs";
+import { PurchasedTicketFindManyArgs } from "../../purchasedTicket/base/PurchasedTicketFindManyArgs";
+import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
 import { TicketService } from "../ticket.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => Ticket)
@@ -136,5 +138,25 @@ export class TicketResolverBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [PurchasedTicket], { name: "purchasedTickets" })
+  @nestAccessControl.UseRoles({
+    resource: "PurchasedTicket",
+    action: "read",
+    possession: "any",
+  })
+  async findPurchasedTickets(
+    @graphql.Parent() parent: Ticket,
+    @graphql.Args() args: PurchasedTicketFindManyArgs
+  ): Promise<PurchasedTicket[]> {
+    const results = await this.service.findPurchasedTickets(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 }

@@ -11,11 +11,31 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, MaxLength, IsOptional, IsEnum } from "class-validator";
+import { PurchasedTicketCreateNestedManyWithoutTicketsInput } from "./PurchasedTicketCreateNestedManyWithoutTicketsInput";
+import {
+  ValidateNested,
+  IsOptional,
+  IsString,
+  MaxLength,
+  IsEnum,
+} from "class-validator";
+import { Type } from "class-transformer";
 import { EnumTicketStatus } from "./EnumTicketStatus";
 
 @InputType()
 class TicketCreateInput {
+  @ApiProperty({
+    required: false,
+    type: () => PurchasedTicketCreateNestedManyWithoutTicketsInput,
+  })
+  @ValidateNested()
+  @Type(() => PurchasedTicketCreateNestedManyWithoutTicketsInput)
+  @IsOptional()
+  @Field(() => PurchasedTicketCreateNestedManyWithoutTicketsInput, {
+    nullable: true,
+  })
+  purchasedTickets?: PurchasedTicketCreateNestedManyWithoutTicketsInput;
+
   @ApiProperty({
     required: false,
     type: String,

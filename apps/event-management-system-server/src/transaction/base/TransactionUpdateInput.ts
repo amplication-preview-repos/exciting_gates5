@@ -16,14 +16,15 @@ import {
   Min,
   Max,
   IsOptional,
-  IsString,
-  MaxLength,
   IsEnum,
+  ValidateNested,
 } from "class-validator";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
-import { EnumTransactionTransactionTypeEnumTs } from "./EnumTransactionTransactionTypeEnumTs";
+import { EnumTransactionTransactionType } from "./EnumTransactionTransactionType";
+import { WalletWhereUniqueInput } from "../../wallet/base/WalletWhereUniqueInput";
+import { Type } from "class-transformer";
 
 @InputType()
 class TransactionUpdateInput {
@@ -42,19 +43,6 @@ class TransactionUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: Number,
-  })
-  @IsNumber()
-  @Min(-999999999)
-  @Max(999999999)
-  @IsOptional()
-  @Field(() => Number, {
-    nullable: true,
-  })
-  amountTxn?: number | null;
-
-  @ApiProperty({
-    required: false,
   })
   @IsJSONValue()
   @IsOptional()
@@ -65,94 +53,26 @@ class TransactionUpdateInput {
 
   @ApiProperty({
     required: false,
+    enum: EnumTransactionTransactionType,
   })
-  @IsJSONValue()
+  @IsEnum(EnumTransactionTransactionType)
   @IsOptional()
-  @Field(() => GraphQLJSON, {
+  @Field(() => EnumTransactionTransactionType, {
     nullable: true,
   })
-  metadataTs?: InputJsonValue;
+  transactionType?: "Withdraw" | "Deposit" | "Spend" | null;
 
   @ApiProperty({
     required: false,
+    type: () => WalletWhereUniqueInput,
   })
-  @IsJSONValue()
+  @ValidateNested()
+  @Type(() => WalletWhereUniqueInput)
   @IsOptional()
-  @Field(() => GraphQLJSON, {
+  @Field(() => WalletWhereUniqueInput, {
     nullable: true,
   })
-  metadataTxn?: InputJsonValue;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  transactionType?: string | null;
-
-  @ApiProperty({
-    required: false,
-    enum: EnumTransactionTransactionTypeEnumTs,
-  })
-  @IsEnum(EnumTransactionTransactionTypeEnumTs)
-  @IsOptional()
-  @Field(() => EnumTransactionTransactionTypeEnumTs, {
-    nullable: true,
-  })
-  transactionTypeEnumTs?: "Option1" | null;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  transactionTypeTs?: string | null;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  transactionTypeTxn?: string | null;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  walletRelationTxn?: string | null;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  walletTxn?: string | null;
+  wallet?: WalletWhereUniqueInput | null;
 }
 
 export { TransactionUpdateInput as TransactionUpdateInput };

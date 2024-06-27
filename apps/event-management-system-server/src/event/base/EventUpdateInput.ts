@@ -23,7 +23,9 @@ import { Type } from "class-transformer";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
+import { PurchasedTicketUpdateManyWithoutEventsInput } from "./PurchasedTicketUpdateManyWithoutEventsInput";
 import { SubAdminUpdateManyWithoutEventsInput } from "./SubAdminUpdateManyWithoutEventsInput";
+import { TicketTierUpdateManyWithoutEventsInput } from "./TicketTierUpdateManyWithoutEventsInput";
 import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
@@ -49,7 +51,7 @@ class EventUpdateInput {
   @Field(() => String, {
     nullable: true,
   })
-  coverImage?: string | null;
+  coverImage?: string;
 
   @ApiProperty({
     required: false,
@@ -61,7 +63,7 @@ class EventUpdateInput {
   @Field(() => String, {
     nullable: true,
   })
-  description?: string | null;
+  description?: string;
 
   @ApiProperty({
     required: false,
@@ -72,7 +74,7 @@ class EventUpdateInput {
   @Field(() => Date, {
     nullable: true,
   })
-  eventDate?: Date | null;
+  eventDate?: Date;
 
   @ApiProperty({
     required: false,
@@ -96,7 +98,7 @@ class EventUpdateInput {
   @Field(() => String, {
     nullable: true,
   })
-  eventType?: string | null;
+  eventType?: string;
 
   @ApiProperty({
     required: false,
@@ -121,6 +123,18 @@ class EventUpdateInput {
 
   @ApiProperty({
     required: false,
+    type: () => PurchasedTicketUpdateManyWithoutEventsInput,
+  })
+  @ValidateNested()
+  @Type(() => PurchasedTicketUpdateManyWithoutEventsInput)
+  @IsOptional()
+  @Field(() => PurchasedTicketUpdateManyWithoutEventsInput, {
+    nullable: true,
+  })
+  purchasedTickets?: PurchasedTicketUpdateManyWithoutEventsInput;
+
+  @ApiProperty({
+    required: false,
     type: () => SubAdminUpdateManyWithoutEventsInput,
   })
   @ValidateNested()
@@ -133,13 +147,15 @@ class EventUpdateInput {
 
   @ApiProperty({
     required: false,
+    type: () => TicketTierUpdateManyWithoutEventsInput,
   })
-  @IsJSONValue()
+  @ValidateNested()
+  @Type(() => TicketTierUpdateManyWithoutEventsInput)
   @IsOptional()
-  @Field(() => GraphQLJSON, {
+  @Field(() => TicketTierUpdateManyWithoutEventsInput, {
     nullable: true,
   })
-  ticketTiers?: InputJsonValue;
+  ticketTiers?: TicketTierUpdateManyWithoutEventsInput;
 
   @ApiProperty({
     required: false,
@@ -151,7 +167,7 @@ class EventUpdateInput {
   @Field(() => String, {
     nullable: true,
   })
-  title?: string | null;
+  title?: string;
 
   @ApiProperty({
     required: false,
@@ -175,7 +191,7 @@ class EventUpdateInput {
   @Field(() => UserWhereUniqueInput, {
     nullable: true,
   })
-  user?: UserWhereUniqueInput | null;
+  user?: UserWhereUniqueInput;
 }
 
 export { EventUpdateInput as EventUpdateInput };

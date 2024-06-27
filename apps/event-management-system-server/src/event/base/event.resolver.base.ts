@@ -26,8 +26,12 @@ import { EventFindUniqueArgs } from "./EventFindUniqueArgs";
 import { CreateEventArgs } from "./CreateEventArgs";
 import { UpdateEventArgs } from "./UpdateEventArgs";
 import { DeleteEventArgs } from "./DeleteEventArgs";
+import { PurchasedTicketFindManyArgs } from "../../purchasedTicket/base/PurchasedTicketFindManyArgs";
+import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
 import { SubAdminFindManyArgs } from "../../subAdmin/base/SubAdminFindManyArgs";
 import { SubAdmin } from "../../subAdmin/base/SubAdmin";
+import { TicketTierFindManyArgs } from "../../ticketTier/base/TicketTierFindManyArgs";
+import { TicketTier } from "../../ticketTier/base/TicketTier";
 import { User } from "../../user/base/User";
 import { EventService } from "../event.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
@@ -94,11 +98,9 @@ export class EventResolverBase {
       data: {
         ...args.data,
 
-        user: args.data.user
-          ? {
-              connect: args.data.user,
-            }
-          : undefined,
+        user: {
+          connect: args.data.user,
+        },
       },
     });
   }
@@ -119,11 +121,9 @@ export class EventResolverBase {
         data: {
           ...args.data,
 
-          user: args.data.user
-            ? {
-                connect: args.data.user,
-              }
-            : undefined,
+          user: {
+            connect: args.data.user,
+          },
         },
       });
     } catch (error) {
@@ -158,6 +158,26 @@ export class EventResolverBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [PurchasedTicket], { name: "purchasedTickets" })
+  @nestAccessControl.UseRoles({
+    resource: "PurchasedTicket",
+    action: "read",
+    possession: "any",
+  })
+  async findPurchasedTickets(
+    @graphql.Parent() parent: Event,
+    @graphql.Args() args: PurchasedTicketFindManyArgs
+  ): Promise<PurchasedTicket[]> {
+    const results = await this.service.findPurchasedTickets(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @graphql.ResolveField(() => [SubAdmin], { name: "subAdmins" })
   @nestAccessControl.UseRoles({
     resource: "SubAdmin",
@@ -169,6 +189,26 @@ export class EventResolverBase {
     @graphql.Args() args: SubAdminFindManyArgs
   ): Promise<SubAdmin[]> {
     const results = await this.service.findSubAdmins(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [TicketTier], { name: "ticketTiers" })
+  @nestAccessControl.UseRoles({
+    resource: "TicketTier",
+    action: "read",
+    possession: "any",
+  })
+  async findTicketTiers(
+    @graphql.Parent() parent: Event,
+    @graphql.Args() args: TicketTierFindManyArgs
+  ): Promise<TicketTier[]> {
+    const results = await this.service.findTicketTiers(parent.id, args);
 
     if (!results) {
       return [];

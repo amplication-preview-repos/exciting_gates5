@@ -12,9 +12,14 @@ https://docs.amplication.com/how-to/custom-code
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { EventWhereUniqueInput } from "../../event/base/EventWhereUniqueInput";
-import { ValidateNested, IsOptional, IsBoolean } from "class-validator";
+import {
+  ValidateNested,
+  IsOptional,
+  IsString,
+  MaxLength,
+  IsBoolean,
+} from "class-validator";
 import { Type } from "class-transformer";
-import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class SubAdminCreateInput {
@@ -32,6 +37,18 @@ class SubAdminCreateInput {
 
   @ApiProperty({
     required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  eventRelation?: string | null;
+
+  @ApiProperty({
+    required: false,
     type: Boolean,
   })
   @IsBoolean()
@@ -40,18 +57,6 @@ class SubAdminCreateInput {
     nullable: true,
   })
   isActive?: boolean | null;
-
-  @ApiProperty({
-    required: false,
-    type: () => UserWhereUniqueInput,
-  })
-  @ValidateNested()
-  @Type(() => UserWhereUniqueInput)
-  @IsOptional()
-  @Field(() => UserWhereUniqueInput, {
-    nullable: true,
-  })
-  user?: UserWhereUniqueInput | null;
 }
 
 export { SubAdminCreateInput as SubAdminCreateInput };

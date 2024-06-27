@@ -20,11 +20,9 @@ import {
   Max,
   ValidateNested,
 } from "class-validator";
-import { IsJSONValue } from "../../validators";
-import { GraphQLJSON } from "graphql-type-json";
-import { InputJsonValue } from "../../types";
-import { UserUpdateManyWithoutWalletsInput } from "./UserUpdateManyWithoutWalletsInput";
+import { TransactionUpdateManyWithoutWalletsInput } from "./TransactionUpdateManyWithoutWalletsInput";
 import { Type } from "class-transformer";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class WalletUpdateInput {
@@ -38,7 +36,7 @@ class WalletUpdateInput {
   @Field(() => String, {
     nullable: true,
   })
-  pin?: string | null;
+  pin?: string;
 
   @ApiProperty({
     required: false,
@@ -51,29 +49,31 @@ class WalletUpdateInput {
   @Field(() => Number, {
     nullable: true,
   })
-  totalAmount?: number | null;
+  totalAmount?: number;
 
   @ApiProperty({
     required: false,
-  })
-  @IsJSONValue()
-  @IsOptional()
-  @Field(() => GraphQLJSON, {
-    nullable: true,
-  })
-  transactions?: InputJsonValue;
-
-  @ApiProperty({
-    required: false,
-    type: () => UserUpdateManyWithoutWalletsInput,
+    type: () => TransactionUpdateManyWithoutWalletsInput,
   })
   @ValidateNested()
-  @Type(() => UserUpdateManyWithoutWalletsInput)
+  @Type(() => TransactionUpdateManyWithoutWalletsInput)
   @IsOptional()
-  @Field(() => UserUpdateManyWithoutWalletsInput, {
+  @Field(() => TransactionUpdateManyWithoutWalletsInput, {
     nullable: true,
   })
-  users?: UserUpdateManyWithoutWalletsInput;
+  transactions?: TransactionUpdateManyWithoutWalletsInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  @IsOptional()
+  @Field(() => UserWhereUniqueInput, {
+    nullable: true,
+  })
+  user?: UserWhereUniqueInput;
 }
 
 export { WalletUpdateInput as WalletUpdateInput };

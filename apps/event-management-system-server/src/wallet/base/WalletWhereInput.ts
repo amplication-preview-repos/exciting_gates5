@@ -14,10 +14,9 @@ import { ApiProperty } from "@nestjs/swagger";
 import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
-import { StringNullableFilter } from "../../util/StringNullableFilter";
-import { FloatNullableFilter } from "../../util/FloatNullableFilter";
-import { JsonFilter } from "../../util/JsonFilter";
-import { UserListRelationFilter } from "../../user/base/UserListRelationFilter";
+import { FloatFilter } from "../../util/FloatFilter";
+import { TransactionListRelationFilter } from "../../transaction/base/TransactionListRelationFilter";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class WalletWhereInput {
@@ -34,48 +33,49 @@ class WalletWhereInput {
 
   @ApiProperty({
     required: false,
-    type: StringNullableFilter,
+    type: StringFilter,
   })
-  @Type(() => StringNullableFilter)
+  @Type(() => StringFilter)
   @IsOptional()
-  @Field(() => StringNullableFilter, {
+  @Field(() => StringFilter, {
     nullable: true,
   })
-  pin?: StringNullableFilter;
+  pin?: StringFilter;
 
   @ApiProperty({
     required: false,
-    type: FloatNullableFilter,
+    type: FloatFilter,
   })
-  @Type(() => FloatNullableFilter)
+  @Type(() => FloatFilter)
   @IsOptional()
-  @Field(() => FloatNullableFilter, {
+  @Field(() => FloatFilter, {
     nullable: true,
   })
-  totalAmount?: FloatNullableFilter;
+  totalAmount?: FloatFilter;
 
   @ApiProperty({
     required: false,
-    type: JsonFilter,
-  })
-  @Type(() => JsonFilter)
-  @IsOptional()
-  @Field(() => JsonFilter, {
-    nullable: true,
-  })
-  transactions?: JsonFilter;
-
-  @ApiProperty({
-    required: false,
-    type: () => UserListRelationFilter,
+    type: () => TransactionListRelationFilter,
   })
   @ValidateNested()
-  @Type(() => UserListRelationFilter)
+  @Type(() => TransactionListRelationFilter)
   @IsOptional()
-  @Field(() => UserListRelationFilter, {
+  @Field(() => TransactionListRelationFilter, {
     nullable: true,
   })
-  users?: UserListRelationFilter;
+  transactions?: TransactionListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  @IsOptional()
+  @Field(() => UserWhereUniqueInput, {
+    nullable: true,
+  })
+  user?: UserWhereUniqueInput;
 }
 
 export { WalletWhereInput as WalletWhereInput };

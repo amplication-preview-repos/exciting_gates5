@@ -11,7 +11,6 @@ export type EventOrderByInput = {
   guestPerformers?: SortOrder;
   id?: SortOrder;
   isApproved?: SortOrder;
-  ticketTiers?: SortOrder;
   title?: SortOrder;
   trailer?: SortOrder;
   updatedAt?: SortOrder;

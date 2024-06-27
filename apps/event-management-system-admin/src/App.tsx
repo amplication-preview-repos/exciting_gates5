@@ -41,6 +41,10 @@ import { TransactionList } from "./transaction/TransactionList";
 import { TransactionCreate } from "./transaction/TransactionCreate";
 import { TransactionEdit } from "./transaction/TransactionEdit";
 import { TransactionShow } from "./transaction/TransactionShow";
+import { PurchasedTicketList } from "./purchasedTicket/PurchasedTicketList";
+import { PurchasedTicketCreate } from "./purchasedTicket/PurchasedTicketCreate";
+import { PurchasedTicketEdit } from "./purchasedTicket/PurchasedTicketEdit";
+import { PurchasedTicketShow } from "./purchasedTicket/PurchasedTicketShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -129,6 +133,13 @@ const App = (): React.ReactElement => {
           edit={TransactionEdit}
           create={TransactionCreate}
           show={TransactionShow}
+        />
+        <Resource
+          name="PurchasedTicket"
+          list={PurchasedTicketList}
+          edit={PurchasedTicketEdit}
+          create={PurchasedTicketCreate}
+          show={PurchasedTicketShow}
         />
       </Admin>
     </div>

@@ -4,32 +4,32 @@ import {
   SimpleForm,
   EditProps,
   NumberInput,
-  TextInput,
   SelectInput,
+  ReferenceInput,
 } from "react-admin";
+import { WalletTitle } from "../wallet/WalletTitle";
 
 export const TransactionEdit = (props: EditProps): React.ReactElement => {
   return (
     <Edit {...props}>
       <SimpleForm>
         <NumberInput label="amount" source="amount" />
-        <NumberInput label="amountTxn" source="amountTxn" />
         <div />
-        <div />
-        <div />
-        <TextInput label="transactionType" source="transactionType" />
         <SelectInput
-          source="transactionTypeEnumTs"
-          label="transactionTypeEnumTs"
-          choices={[{ label: "Option 1", value: "Option1" }]}
+          source="transactionType"
+          label="transactionType"
+          choices={[
+            { label: "Withdraw", value: "Withdraw" },
+            { label: "Deposit", value: "Deposit" },
+            { label: "Spend", value: "Spend" },
+          ]}
           optionText="label"
           allowEmpty
           optionValue="value"
         />
-        <TextInput label="transactionType_TS" source="transactionTypeTs" />
-        <TextInput label="transactionTypeTxn" source="transactionTypeTxn" />
-        <TextInput label="walletRelationTxn" source="walletRelationTxn" />
-        <TextInput label="walletTxn" source="walletTxn" />
+        <ReferenceInput source="wallet.id" reference="Wallet" label="Wallet">
+          <SelectInput optionText={WalletTitle} />
+        </ReferenceInput>
       </SimpleForm>
     </Edit>
   );

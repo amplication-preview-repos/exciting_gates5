@@ -18,14 +18,15 @@ import {
   IsOptional,
   IsDate,
   IsString,
-  MaxLength,
   IsEnum,
+  ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
-import { EnumTransactionTransactionTypeEnumTs } from "./EnumTransactionTransactionTypeEnumTs";
+import { EnumTransactionTransactionType } from "./EnumTransactionTransactionType";
+import { Wallet } from "../../wallet/base/Wallet";
 
 @ObjectType()
 class Transaction {
@@ -41,19 +42,6 @@ class Transaction {
     nullable: true,
   })
   amount!: number | null;
-
-  @ApiProperty({
-    required: false,
-    type: Number,
-  })
-  @IsNumber()
-  @Min(-999999999)
-  @Max(999999999)
-  @IsOptional()
-  @Field(() => Number, {
-    nullable: true,
-  })
-  amountTxn!: number | null;
 
   @ApiProperty({
     required: true,
@@ -83,70 +71,14 @@ class Transaction {
 
   @ApiProperty({
     required: false,
+    enum: EnumTransactionTransactionType,
   })
-  @IsJSONValue()
+  @IsEnum(EnumTransactionTransactionType)
   @IsOptional()
-  @Field(() => GraphQLJSON, {
+  @Field(() => EnumTransactionTransactionType, {
     nullable: true,
   })
-  metadataTs!: JsonValue;
-
-  @ApiProperty({
-    required: false,
-  })
-  @IsJSONValue()
-  @IsOptional()
-  @Field(() => GraphQLJSON, {
-    nullable: true,
-  })
-  metadataTxn!: JsonValue;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  transactionType!: string | null;
-
-  @ApiProperty({
-    required: false,
-    enum: EnumTransactionTransactionTypeEnumTs,
-  })
-  @IsEnum(EnumTransactionTransactionTypeEnumTs)
-  @IsOptional()
-  @Field(() => EnumTransactionTransactionTypeEnumTs, {
-    nullable: true,
-  })
-  transactionTypeEnumTs?: "Option1" | null;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  transactionTypeTs!: string | null;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  transactionTypeTxn!: string | null;
+  transactionType?: "Withdraw" | "Deposit" | "Spend" | null;
 
   @ApiProperty({
     required: true,
@@ -158,27 +90,12 @@ class Transaction {
 
   @ApiProperty({
     required: false,
-    type: String,
+    type: () => Wallet,
   })
-  @IsString()
-  @MaxLength(1000)
+  @ValidateNested()
+  @Type(() => Wallet)
   @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  walletRelationTxn!: string | null;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  walletTxn!: string | null;
+  wallet?: Wallet | null;
 }
 
 export { Transaction as Transaction };
