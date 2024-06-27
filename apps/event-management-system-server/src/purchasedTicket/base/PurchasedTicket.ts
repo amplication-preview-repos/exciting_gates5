@@ -12,21 +12,30 @@ https://docs.amplication.com/how-to/custom-code
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import {
-  IsDate,
-  ValidateNested,
-  IsOptional,
   IsString,
   MaxLength,
+  IsDate,
+  ValidateNested,
   IsEnum,
+  IsOptional,
 } from "class-validator";
 import { Type } from "class-transformer";
 import { Event } from "../../event/base/Event";
 import { EnumPurchasedTicketStatus } from "./EnumPurchasedTicketStatus";
-import { Ticket } from "../../ticket/base/Ticket";
+import { TicketTier } from "../../ticketTier/base/TicketTier";
 import { User } from "../../user/base/User";
 
 @ObjectType()
 class PurchasedTicket {
+  @ApiProperty({
+    required: true,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @Field(() => String)
+  code!: string;
+
   @ApiProperty({
     required: true,
   })
@@ -36,13 +45,12 @@ class PurchasedTicket {
   createdAt!: Date;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => Event,
   })
   @ValidateNested()
   @Type(() => Event)
-  @IsOptional()
-  event?: Event | null;
+  event?: Event;
 
   @ApiProperty({
     required: true,
@@ -54,18 +62,6 @@ class PurchasedTicket {
 
   @ApiProperty({
     required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  qrCode!: string | null;
-
-  @ApiProperty({
-    required: false,
     enum: EnumPurchasedTicketStatus,
   })
   @IsEnum(EnumPurchasedTicketStatus)
@@ -73,16 +69,15 @@ class PurchasedTicket {
   @Field(() => EnumPurchasedTicketStatus, {
     nullable: true,
   })
-  status?: "Option1" | null;
+  status?: "Used" | "UnUsed" | null;
 
   @ApiProperty({
-    required: false,
-    type: () => Ticket,
+    required: true,
+    type: () => TicketTier,
   })
   @ValidateNested()
-  @Type(() => Ticket)
-  @IsOptional()
-  ticket?: Ticket | null;
+  @Type(() => TicketTier)
+  ticketTier?: TicketTier;
 
   @ApiProperty({
     required: true,
@@ -93,13 +88,12 @@ class PurchasedTicket {
   updatedAt!: Date;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => User,
   })
   @ValidateNested()
   @Type(() => User)
-  @IsOptional()
-  user?: User | null;
+  user?: User;
 }
 
 export { PurchasedTicket as PurchasedTicket };

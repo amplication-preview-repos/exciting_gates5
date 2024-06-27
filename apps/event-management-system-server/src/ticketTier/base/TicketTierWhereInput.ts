@@ -17,6 +17,7 @@ import { IsOptional, ValidateNested } from "class-validator";
 import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { EventWhereUniqueInput } from "../../event/base/EventWhereUniqueInput";
 import { StringFilter } from "../../util/StringFilter";
+import { PurchasedTicketListRelationFilter } from "../../purchasedTicket/base/PurchasedTicketListRelationFilter";
 import { FloatNullableFilter } from "../../util/FloatNullableFilter";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 
@@ -42,29 +43,7 @@ class TicketTierWhereInput {
   @Field(() => IntNullableFilter, {
     nullable: true,
   })
-  amountOnSaleTs?: IntNullableFilter;
-
-  @ApiProperty({
-    required: false,
-    type: IntNullableFilter,
-  })
-  @Type(() => IntNullableFilter)
-  @IsOptional()
-  @Field(() => IntNullableFilter, {
-    nullable: true,
-  })
   amountSold?: IntNullableFilter;
-
-  @ApiProperty({
-    required: false,
-    type: IntNullableFilter,
-  })
-  @Type(() => IntNullableFilter)
-  @IsOptional()
-  @Field(() => IntNullableFilter, {
-    nullable: true,
-  })
-  amountSoldTs?: IntNullableFilter;
 
   @ApiProperty({
     required: false,
@@ -76,17 +55,6 @@ class TicketTierWhereInput {
     nullable: true,
   })
   endDate?: DateTimeNullableFilter;
-
-  @ApiProperty({
-    required: false,
-    type: DateTimeNullableFilter,
-  })
-  @Type(() => DateTimeNullableFilter)
-  @IsOptional()
-  @Field(() => DateTimeNullableFilter, {
-    nullable: true,
-  })
-  endDateTs?: DateTimeNullableFilter;
 
   @ApiProperty({
     required: false,
@@ -113,14 +81,15 @@ class TicketTierWhereInput {
 
   @ApiProperty({
     required: false,
-    type: FloatNullableFilter,
+    type: () => PurchasedTicketListRelationFilter,
   })
-  @Type(() => FloatNullableFilter)
+  @ValidateNested()
+  @Type(() => PurchasedTicketListRelationFilter)
   @IsOptional()
-  @Field(() => FloatNullableFilter, {
+  @Field(() => PurchasedTicketListRelationFilter, {
     nullable: true,
   })
-  purchasePrice?: FloatNullableFilter;
+  purchasedTickets?: PurchasedTicketListRelationFilter;
 
   @ApiProperty({
     required: false,
@@ -131,7 +100,7 @@ class TicketTierWhereInput {
   @Field(() => FloatNullableFilter, {
     nullable: true,
   })
-  purchasePriceTs?: FloatNullableFilter;
+  purchasePrice?: FloatNullableFilter;
 
   @ApiProperty({
     required: false,
@@ -146,17 +115,6 @@ class TicketTierWhereInput {
 
   @ApiProperty({
     required: false,
-    type: DateTimeNullableFilter,
-  })
-  @Type(() => DateTimeNullableFilter)
-  @IsOptional()
-  @Field(() => DateTimeNullableFilter, {
-    nullable: true,
-  })
-  startDateTs?: DateTimeNullableFilter;
-
-  @ApiProperty({
-    required: false,
     type: StringNullableFilter,
   })
   @Type(() => StringNullableFilter)
@@ -165,17 +123,6 @@ class TicketTierWhereInput {
     nullable: true,
   })
   title?: StringNullableFilter;
-
-  @ApiProperty({
-    required: false,
-    type: StringNullableFilter,
-  })
-  @Type(() => StringNullableFilter)
-  @IsOptional()
-  @Field(() => StringNullableFilter, {
-    nullable: true,
-  })
-  titleTs?: StringNullableFilter;
 }
 
 export { TicketTierWhereInput as TicketTierWhereInput };

@@ -66,14 +66,14 @@ class NotificationWhereInput {
 
   @ApiProperty({
     required: false,
-    type: StringNullableFilter,
+    type: StringFilter,
   })
-  @Type(() => StringNullableFilter)
+  @Type(() => StringFilter)
   @IsOptional()
-  @Field(() => StringNullableFilter, {
+  @Field(() => StringFilter, {
     nullable: true,
   })
-  title?: StringNullableFilter;
+  title?: StringFilter;
 
   @ApiProperty({
     required: false,

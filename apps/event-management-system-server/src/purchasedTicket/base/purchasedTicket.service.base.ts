@@ -15,7 +15,7 @@ import {
   Prisma,
   PurchasedTicket as PrismaPurchasedTicket,
   Event as PrismaEvent,
-  Ticket as PrismaTicket,
+  TicketTier as PrismaTicketTier,
   User as PrismaUser,
 } from "@prisma/client";
 
@@ -62,12 +62,12 @@ export class PurchasedTicketServiceBase {
       .event();
   }
 
-  async getTicket(parentId: string): Promise<PrismaTicket | null> {
+  async getTicketTier(parentId: string): Promise<PrismaTicketTier | null> {
     return this.prisma.purchasedTicket
       .findUnique({
         where: { id: parentId },
       })
-      .ticket();
+      .ticketTier();
   }
 
   async getUser(parentId: string): Promise<PrismaUser | null> {

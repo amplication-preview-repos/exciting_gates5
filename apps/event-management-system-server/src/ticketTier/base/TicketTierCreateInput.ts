@@ -26,6 +26,7 @@ import {
 
 import { Type } from "class-transformer";
 import { EventWhereUniqueInput } from "../../event/base/EventWhereUniqueInput";
+import { PurchasedTicketCreateNestedManyWithoutTicketTiersInput } from "./PurchasedTicketCreateNestedManyWithoutTicketTiersInput";
 
 @InputType()
 class TicketTierCreateInput {
@@ -53,33 +54,7 @@ class TicketTierCreateInput {
   @Field(() => Number, {
     nullable: true,
   })
-  amountOnSaleTs?: number | null;
-
-  @ApiProperty({
-    required: false,
-    type: Number,
-  })
-  @IsInt()
-  @Min(-999999999)
-  @Max(999999999)
-  @IsOptional()
-  @Field(() => Number, {
-    nullable: true,
-  })
   amountSold?: number | null;
-
-  @ApiProperty({
-    required: false,
-    type: Number,
-  })
-  @IsInt()
-  @Min(-999999999)
-  @Max(999999999)
-  @IsOptional()
-  @Field(() => Number, {
-    nullable: true,
-  })
-  amountSoldTs?: number | null;
 
   @ApiProperty({
     required: false,
@@ -94,17 +69,6 @@ class TicketTierCreateInput {
 
   @ApiProperty({
     required: false,
-  })
-  @IsDate()
-  @Type(() => Date)
-  @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
-  endDateTs?: Date | null;
-
-  @ApiProperty({
-    required: false,
     type: () => EventWhereUniqueInput,
   })
   @ValidateNested()
@@ -114,6 +78,18 @@ class TicketTierCreateInput {
     nullable: true,
   })
   event?: EventWhereUniqueInput | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => PurchasedTicketCreateNestedManyWithoutTicketTiersInput,
+  })
+  @ValidateNested()
+  @Type(() => PurchasedTicketCreateNestedManyWithoutTicketTiersInput)
+  @IsOptional()
+  @Field(() => PurchasedTicketCreateNestedManyWithoutTicketTiersInput, {
+    nullable: true,
+  })
+  purchasedTickets?: PurchasedTicketCreateNestedManyWithoutTicketTiersInput;
 
   @ApiProperty({
     required: false,
@@ -130,19 +106,6 @@ class TicketTierCreateInput {
 
   @ApiProperty({
     required: false,
-    type: Number,
-  })
-  @IsNumber()
-  @Min(-999999999)
-  @Max(999999999)
-  @IsOptional()
-  @Field(() => Number, {
-    nullable: true,
-  })
-  purchasePriceTs?: number | null;
-
-  @ApiProperty({
-    required: false,
   })
   @IsDate()
   @Type(() => Date)
@@ -151,17 +114,6 @@ class TicketTierCreateInput {
     nullable: true,
   })
   startDate?: Date | null;
-
-  @ApiProperty({
-    required: false,
-  })
-  @IsDate()
-  @Type(() => Date)
-  @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
-  startDateTs?: Date | null;
 
   @ApiProperty({
     required: false,
@@ -174,18 +126,6 @@ class TicketTierCreateInput {
     nullable: true,
   })
   title?: string | null;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  titleTs?: string | null;
 }
 
 export { TicketTierCreateInput as TicketTierCreateInput };

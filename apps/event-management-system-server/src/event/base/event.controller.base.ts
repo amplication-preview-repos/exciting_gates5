@@ -54,6 +54,9 @@ export class EventControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBody({
+    type: EventCreateInput,
+  })
   async createEvent(@common.Body() data: EventCreateInput): Promise<Event> {
     return await this.service.createEvent({
       data: {
@@ -186,6 +189,9 @@ export class EventControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBody({
+    type: EventUpdateInput,
+  })
   async updateEvent(
     @common.Param() params: EventWhereUniqueInput,
     @common.Body() data: EventUpdateInput
@@ -297,6 +303,7 @@ export class EventControllerBase {
     const results = await this.service.findPurchasedTickets(params.id, {
       ...query,
       select: {
+        code: true,
         createdAt: true,
 
         event: {
@@ -306,10 +313,9 @@ export class EventControllerBase {
         },
 
         id: true,
-        qrCode: true,
         status: true,
 
-        ticket: {
+        ticketTier: {
           select: {
             id: true,
           },
@@ -422,10 +428,15 @@ export class EventControllerBase {
           },
         },
 
-        eventRelation: true,
         id: true,
         isActive: true,
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (results === null) {
@@ -519,12 +530,9 @@ export class EventControllerBase {
       ...query,
       select: {
         amountOnSale: true,
-        amountOnSaleTs: true,
         amountSold: true,
-        amountSoldTs: true,
         createdAt: true,
         endDate: true,
-        endDateTs: true,
 
         event: {
           select: {
@@ -534,11 +542,8 @@ export class EventControllerBase {
 
         id: true,
         purchasePrice: true,
-        purchasePriceTs: true,
         startDate: true,
-        startDateTs: true,
         title: true,
-        titleTs: true,
         updatedAt: true,
       },
     });

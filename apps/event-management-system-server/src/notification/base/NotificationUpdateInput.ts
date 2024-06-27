@@ -68,7 +68,7 @@ class NotificationUpdateInput {
   @Field(() => String, {
     nullable: true,
   })
-  title?: string | null;
+  title?: string;
 
   @ApiProperty({
     required: false,

@@ -14,9 +14,11 @@ import { PrismaService } from "../../prisma/prisma.service";
 import {
   Prisma,
   User as PrismaUser,
+  Preference as PrismaPreference,
   Event as PrismaEvent,
   Notification as PrismaNotification,
   PurchasedTicket as PrismaPurchasedTicket,
+  SubAdmin as PrismaSubAdmin,
   Wallet as PrismaWallet,
 } from "@prisma/client";
 
@@ -69,6 +71,17 @@ export class UserServiceBase {
     return this.prisma.user.delete(args);
   }
 
+  async findEventPreferences(
+    parentId: string,
+    args: Prisma.PreferenceFindManyArgs
+  ): Promise<PrismaPreference[]> {
+    return this.prisma.user
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .eventPreferences(args);
+  }
+
   async findEvents(
     parentId: string,
     args: Prisma.EventFindManyArgs
@@ -100,6 +113,17 @@ export class UserServiceBase {
         where: { id: parentId },
       })
       .purchasedTickets(args);
+  }
+
+  async findSubAdmins(
+    parentId: string,
+    args: Prisma.SubAdminFindManyArgs
+  ): Promise<PrismaSubAdmin[]> {
+    return this.prisma.user
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .subAdmins(args);
   }
 
   async getWallet(parentId: string): Promise<PrismaWallet | null> {

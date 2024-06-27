@@ -16,14 +16,17 @@ import {
   IsOptional,
   ValidateNested,
   MaxLength,
+  IsBoolean,
 } from "class-validator";
-import { EventCreateNestedManyWithoutUsersInput } from "./EventCreateNestedManyWithoutUsersInput";
+import { PreferenceCreateNestedManyWithoutUsersInput } from "./PreferenceCreateNestedManyWithoutUsersInput";
 import { Type } from "class-transformer";
+import { EventCreateNestedManyWithoutUsersInput } from "./EventCreateNestedManyWithoutUsersInput";
 import { NotificationCreateNestedManyWithoutUsersInput } from "./NotificationCreateNestedManyWithoutUsersInput";
+import { PurchasedTicketCreateNestedManyWithoutUsersInput } from "./PurchasedTicketCreateNestedManyWithoutUsersInput";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
-import { PurchasedTicketCreateNestedManyWithoutUsersInput } from "./PurchasedTicketCreateNestedManyWithoutUsersInput";
+import { SubAdminCreateNestedManyWithoutUsersInput } from "./SubAdminCreateNestedManyWithoutUsersInput";
 import { WalletWhereUniqueInput } from "../../wallet/base/WalletWhereUniqueInput";
 
 @InputType()
@@ -38,6 +41,18 @@ class UserCreateInput {
     nullable: true,
   })
   email?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => PreferenceCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => PreferenceCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => PreferenceCreateNestedManyWithoutUsersInput, {
+    nullable: true,
+  })
+  eventPreferences?: PreferenceCreateNestedManyWithoutUsersInput;
 
   @ApiProperty({
     required: false,
@@ -62,6 +77,14 @@ class UserCreateInput {
     nullable: true,
   })
   firstName?: string | null;
+
+  @ApiProperty({
+    required: true,
+    type: Boolean,
+  })
+  @IsBoolean()
+  @Field(() => Boolean)
+  isBan!: boolean;
 
   @ApiProperty({
     required: false,
@@ -133,16 +156,6 @@ class UserCreateInput {
 
   @ApiProperty({
     required: false,
-  })
-  @IsJSONValue()
-  @IsOptional()
-  @Field(() => GraphQLJSON, {
-    nullable: true,
-  })
-  preferences?: InputJsonValue;
-
-  @ApiProperty({
-    required: false,
     type: () => PurchasedTicketCreateNestedManyWithoutUsersInput,
   })
   @ValidateNested()
@@ -159,6 +172,18 @@ class UserCreateInput {
   @IsJSONValue()
   @Field(() => GraphQLJSON)
   roles!: InputJsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => SubAdminCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => SubAdminCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => SubAdminCreateNestedManyWithoutUsersInput, {
+    nullable: true,
+  })
+  subAdmins?: SubAdminCreateNestedManyWithoutUsersInput;
 
   @ApiProperty({
     required: true,

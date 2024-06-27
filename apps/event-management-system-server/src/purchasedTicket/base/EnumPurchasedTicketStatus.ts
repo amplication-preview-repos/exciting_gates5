@@ -12,7 +12,8 @@ https://docs.amplication.com/how-to/custom-code
 import { registerEnumType } from "@nestjs/graphql";
 
 export enum EnumPurchasedTicketStatus {
-  Option_1 = "Option1",
+  Used = "Used",
+  UnUsed = "UnUsed",
 }
 
 registerEnumType(EnumPurchasedTicketStatus, {

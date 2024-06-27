@@ -59,16 +59,13 @@ class NotificationCreateInput {
   link?: string | null;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: String,
   })
   @IsString()
   @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  title?: string | null;
+  @Field(() => String)
+  title!: string;
 
   @ApiProperty({
     required: false,

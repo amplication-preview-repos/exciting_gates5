@@ -28,6 +28,17 @@ class PurchasedTicketOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
+  code?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ["asc", "desc"],
+  })
+  @IsOptional()
+  @IsEnum(SortOrder)
+  @Field(() => SortOrder, {
+    nullable: true,
+  })
   createdAt?: SortOrder;
 
   @ApiProperty({
@@ -61,17 +72,6 @@ class PurchasedTicketOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  qrCode?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
   status?: SortOrder;
 
   @ApiProperty({
@@ -83,7 +83,7 @@ class PurchasedTicketOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  ticketId?: SortOrder;
+  ticketTierId?: SortOrder;
 
   @ApiProperty({
     required: false,

@@ -45,6 +45,9 @@ export class PurchasedTicketControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBody({
+    type: PurchasedTicketCreateInput,
+  })
   async createPurchasedTicket(
     @common.Body() data: PurchasedTicketCreateInput
   ): Promise<PurchasedTicket> {
@@ -52,25 +55,20 @@ export class PurchasedTicketControllerBase {
       data: {
         ...data,
 
-        event: data.event
-          ? {
-              connect: data.event,
-            }
-          : undefined,
+        event: {
+          connect: data.event,
+        },
 
-        ticket: data.ticket
-          ? {
-              connect: data.ticket,
-            }
-          : undefined,
+        ticketTier: {
+          connect: data.ticketTier,
+        },
 
-        user: data.user
-          ? {
-              connect: data.user,
-            }
-          : undefined,
+        user: {
+          connect: data.user,
+        },
       },
       select: {
+        code: true,
         createdAt: true,
 
         event: {
@@ -80,10 +78,9 @@ export class PurchasedTicketControllerBase {
         },
 
         id: true,
-        qrCode: true,
         status: true,
 
-        ticket: {
+        ticketTier: {
           select: {
             id: true,
           },
@@ -119,6 +116,7 @@ export class PurchasedTicketControllerBase {
     return this.service.purchasedTickets({
       ...args,
       select: {
+        code: true,
         createdAt: true,
 
         event: {
@@ -128,10 +126,9 @@ export class PurchasedTicketControllerBase {
         },
 
         id: true,
-        qrCode: true,
         status: true,
 
-        ticket: {
+        ticketTier: {
           select: {
             id: true,
           },
@@ -166,6 +163,7 @@ export class PurchasedTicketControllerBase {
     const result = await this.service.purchasedTicket({
       where: params,
       select: {
+        code: true,
         createdAt: true,
 
         event: {
@@ -175,10 +173,9 @@ export class PurchasedTicketControllerBase {
         },
 
         id: true,
-        qrCode: true,
         status: true,
 
-        ticket: {
+        ticketTier: {
           select: {
             id: true,
           },
@@ -213,6 +210,9 @@ export class PurchasedTicketControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBody({
+    type: PurchasedTicketUpdateInput,
+  })
   async updatePurchasedTicket(
     @common.Param() params: PurchasedTicketWhereUniqueInput,
     @common.Body() data: PurchasedTicketUpdateInput
@@ -223,25 +223,20 @@ export class PurchasedTicketControllerBase {
         data: {
           ...data,
 
-          event: data.event
-            ? {
-                connect: data.event,
-              }
-            : undefined,
+          event: {
+            connect: data.event,
+          },
 
-          ticket: data.ticket
-            ? {
-                connect: data.ticket,
-              }
-            : undefined,
+          ticketTier: {
+            connect: data.ticketTier,
+          },
 
-          user: data.user
-            ? {
-                connect: data.user,
-              }
-            : undefined,
+          user: {
+            connect: data.user,
+          },
         },
         select: {
+          code: true,
           createdAt: true,
 
           event: {
@@ -251,10 +246,9 @@ export class PurchasedTicketControllerBase {
           },
 
           id: true,
-          qrCode: true,
           status: true,
 
-          ticket: {
+          ticketTier: {
             select: {
               id: true,
             },
@@ -297,6 +291,7 @@ export class PurchasedTicketControllerBase {
       return await this.service.deletePurchasedTicket({
         where: params,
         select: {
+          code: true,
           createdAt: true,
 
           event: {
@@ -306,10 +301,9 @@ export class PurchasedTicketControllerBase {
           },
 
           id: true,
-          qrCode: true,
           status: true,
 
-          ticket: {
+          ticketTier: {
             select: {
               id: true,
             },

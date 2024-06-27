@@ -16,14 +16,17 @@ import {
   IsOptional,
   ValidateNested,
   MaxLength,
+  IsBoolean,
 } from "class-validator";
-import { EventUpdateManyWithoutUsersInput } from "./EventUpdateManyWithoutUsersInput";
+import { PreferenceUpdateManyWithoutUsersInput } from "./PreferenceUpdateManyWithoutUsersInput";
 import { Type } from "class-transformer";
+import { EventUpdateManyWithoutUsersInput } from "./EventUpdateManyWithoutUsersInput";
 import { NotificationUpdateManyWithoutUsersInput } from "./NotificationUpdateManyWithoutUsersInput";
+import { PurchasedTicketUpdateManyWithoutUsersInput } from "./PurchasedTicketUpdateManyWithoutUsersInput";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
-import { PurchasedTicketUpdateManyWithoutUsersInput } from "./PurchasedTicketUpdateManyWithoutUsersInput";
+import { SubAdminUpdateManyWithoutUsersInput } from "./SubAdminUpdateManyWithoutUsersInput";
 import { WalletWhereUniqueInput } from "../../wallet/base/WalletWhereUniqueInput";
 
 @InputType()
@@ -38,6 +41,18 @@ class UserUpdateInput {
     nullable: true,
   })
   email?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => PreferenceUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => PreferenceUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => PreferenceUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  eventPreferences?: PreferenceUpdateManyWithoutUsersInput;
 
   @ApiProperty({
     required: false,
@@ -62,6 +77,17 @@ class UserUpdateInput {
     nullable: true,
   })
   firstName?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: Boolean,
+  })
+  @IsBoolean()
+  @IsOptional()
+  @Field(() => Boolean, {
+    nullable: true,
+  })
+  isBan?: boolean;
 
   @ApiProperty({
     required: false,
@@ -136,16 +162,6 @@ class UserUpdateInput {
 
   @ApiProperty({
     required: false,
-  })
-  @IsJSONValue()
-  @IsOptional()
-  @Field(() => GraphQLJSON, {
-    nullable: true,
-  })
-  preferences?: InputJsonValue;
-
-  @ApiProperty({
-    required: false,
     type: () => PurchasedTicketUpdateManyWithoutUsersInput,
   })
   @ValidateNested()
@@ -165,6 +181,18 @@ class UserUpdateInput {
     nullable: true,
   })
   roles?: InputJsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => SubAdminUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => SubAdminUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => SubAdminUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  subAdmins?: SubAdminUpdateManyWithoutUsersInput;
 
   @ApiProperty({
     required: false,

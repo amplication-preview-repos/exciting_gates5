@@ -11,17 +11,27 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { EventWhereUniqueInput } from "../../event/base/EventWhereUniqueInput";
-import { ValidateNested, IsOptional, IsEnum } from "class-validator";
-import { Type } from "class-transformer";
 import { StringFilter } from "../../util/StringFilter";
-import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { Type } from "class-transformer";
+import { IsOptional, ValidateNested, IsEnum } from "class-validator";
+import { EventWhereUniqueInput } from "../../event/base/EventWhereUniqueInput";
 import { EnumPurchasedTicketStatus } from "./EnumPurchasedTicketStatus";
-import { TicketWhereUniqueInput } from "../../ticket/base/TicketWhereUniqueInput";
+import { TicketTierWhereUniqueInput } from "../../ticketTier/base/TicketTierWhereUniqueInput";
 import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class PurchasedTicketWhereInput {
+  @ApiProperty({
+    required: false,
+    type: StringFilter,
+  })
+  @Type(() => StringFilter)
+  @IsOptional()
+  @Field(() => StringFilter, {
+    nullable: true,
+  })
+  code?: StringFilter;
+
   @ApiProperty({
     required: false,
     type: () => EventWhereUniqueInput,
@@ -47,17 +57,6 @@ class PurchasedTicketWhereInput {
 
   @ApiProperty({
     required: false,
-    type: StringNullableFilter,
-  })
-  @Type(() => StringNullableFilter)
-  @IsOptional()
-  @Field(() => StringNullableFilter, {
-    nullable: true,
-  })
-  qrCode?: StringNullableFilter;
-
-  @ApiProperty({
-    required: false,
     enum: EnumPurchasedTicketStatus,
   })
   @IsEnum(EnumPurchasedTicketStatus)
@@ -65,19 +64,19 @@ class PurchasedTicketWhereInput {
   @Field(() => EnumPurchasedTicketStatus, {
     nullable: true,
   })
-  status?: "Option1";
+  status?: "Used" | "UnUsed";
 
   @ApiProperty({
     required: false,
-    type: () => TicketWhereUniqueInput,
+    type: () => TicketTierWhereUniqueInput,
   })
   @ValidateNested()
-  @Type(() => TicketWhereUniqueInput)
+  @Type(() => TicketTierWhereUniqueInput)
   @IsOptional()
-  @Field(() => TicketWhereUniqueInput, {
+  @Field(() => TicketTierWhereUniqueInput, {
     nullable: true,
   })
-  ticket?: TicketWhereUniqueInput;
+  ticketTier?: TicketTierWhereUniqueInput;
 
   @ApiProperty({
     required: false,

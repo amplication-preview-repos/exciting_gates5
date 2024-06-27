@@ -12,40 +12,20 @@ https://docs.amplication.com/how-to/custom-code
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { EventWhereUniqueInput } from "../../event/base/EventWhereUniqueInput";
-import {
-  ValidateNested,
-  IsOptional,
-  IsString,
-  MaxLength,
-  IsBoolean,
-} from "class-validator";
+import { ValidateNested, IsBoolean, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class SubAdminCreateInput {
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => EventWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => EventWhereUniqueInput)
-  @IsOptional()
-  @Field(() => EventWhereUniqueInput, {
-    nullable: true,
-  })
-  event?: EventWhereUniqueInput | null;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  eventRelation?: string | null;
+  @Field(() => EventWhereUniqueInput)
+  event!: EventWhereUniqueInput;
 
   @ApiProperty({
     required: false,
@@ -57,6 +37,15 @@ class SubAdminCreateInput {
     nullable: true,
   })
   isActive?: boolean | null;
+
+  @ApiProperty({
+    required: true,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  @Field(() => UserWhereUniqueInput)
+  user!: UserWhereUniqueInput;
 }
 
 export { SubAdminCreateInput as SubAdminCreateInput };

@@ -17,14 +17,17 @@ import {
   IsOptional,
   ValidateNested,
   MaxLength,
+  IsBoolean,
 } from "class-validator";
 import { Type } from "class-transformer";
+import { Preference } from "../../preference/base/Preference";
 import { Event } from "../../event/base/Event";
 import { Notification } from "../../notification/base/Notification";
+import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
-import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
+import { SubAdmin } from "../../subAdmin/base/SubAdmin";
 import { Wallet } from "../../wallet/base/Wallet";
 
 @ObjectType()
@@ -47,6 +50,15 @@ class User {
     nullable: true,
   })
   email!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Preference],
+  })
+  @ValidateNested()
+  @Type(() => Preference)
+  @IsOptional()
+  eventPreferences?: Array<Preference>;
 
   @ApiProperty({
     required: false,
@@ -76,6 +88,14 @@ class User {
   @IsString()
   @Field(() => String)
   id!: string;
+
+  @ApiProperty({
+    required: true,
+    type: Boolean,
+  })
+  @IsBoolean()
+  @Field(() => Boolean)
+  isBan!: boolean;
 
   @ApiProperty({
     required: false,
@@ -136,16 +156,6 @@ class User {
 
   @ApiProperty({
     required: false,
-  })
-  @IsJSONValue()
-  @IsOptional()
-  @Field(() => GraphQLJSON, {
-    nullable: true,
-  })
-  preferences!: JsonValue;
-
-  @ApiProperty({
-    required: false,
     type: () => [PurchasedTicket],
   })
   @ValidateNested()
@@ -159,6 +169,15 @@ class User {
   @IsJSONValue()
   @Field(() => GraphQLJSON)
   roles!: JsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => [SubAdmin],
+  })
+  @ValidateNested()
+  @Type(() => SubAdmin)
+  @IsOptional()
+  subAdmins?: Array<SubAdmin>;
 
   @ApiProperty({
     required: true,

@@ -45,6 +45,9 @@ export class SubAdminControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBody({
+    type: SubAdminCreateInput,
+  })
   async createSubAdmin(
     @common.Body() data: SubAdminCreateInput
   ): Promise<SubAdmin> {
@@ -52,11 +55,13 @@ export class SubAdminControllerBase {
       data: {
         ...data,
 
-        event: data.event
-          ? {
-              connect: data.event,
-            }
-          : undefined,
+        event: {
+          connect: data.event,
+        },
+
+        user: {
+          connect: data.user,
+        },
       },
       select: {
         createdAt: true,
@@ -67,10 +72,15 @@ export class SubAdminControllerBase {
           },
         },
 
-        eventRelation: true,
         id: true,
         isActive: true,
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -100,10 +110,15 @@ export class SubAdminControllerBase {
           },
         },
 
-        eventRelation: true,
         id: true,
         isActive: true,
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -134,10 +149,15 @@ export class SubAdminControllerBase {
           },
         },
 
-        eventRelation: true,
         id: true,
         isActive: true,
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (result === null) {
@@ -160,6 +180,9 @@ export class SubAdminControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBody({
+    type: SubAdminUpdateInput,
+  })
   async updateSubAdmin(
     @common.Param() params: SubAdminWhereUniqueInput,
     @common.Body() data: SubAdminUpdateInput
@@ -170,11 +193,13 @@ export class SubAdminControllerBase {
         data: {
           ...data,
 
-          event: data.event
-            ? {
-                connect: data.event,
-              }
-            : undefined,
+          event: {
+            connect: data.event,
+          },
+
+          user: {
+            connect: data.user,
+          },
         },
         select: {
           createdAt: true,
@@ -185,10 +210,15 @@ export class SubAdminControllerBase {
             },
           },
 
-          eventRelation: true,
           id: true,
           isActive: true,
           updatedAt: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -227,10 +257,15 @@ export class SubAdminControllerBase {
             },
           },
 
-          eventRelation: true,
           id: true,
           isActive: true,
           updatedAt: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {

@@ -45,6 +45,9 @@ export class NotificationControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBody({
+    type: NotificationCreateInput,
+  })
   async createNotification(
     @common.Body() data: NotificationCreateInput
   ): Promise<Notification> {
@@ -162,6 +165,9 @@ export class NotificationControllerBase {
   })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
+  })
+  @swagger.ApiBody({
+    type: NotificationUpdateInput,
   })
   async updateNotification(
     @common.Param() params: NotificationWhereUniqueInput,

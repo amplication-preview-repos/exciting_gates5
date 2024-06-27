@@ -14,13 +14,13 @@ import { ApiProperty } from "@nestjs/swagger";
 import {
   IsDate,
   ValidateNested,
-  IsOptional,
   IsString,
-  MaxLength,
   IsBoolean,
+  IsOptional,
 } from "class-validator";
 import { Type } from "class-transformer";
 import { Event } from "../../event/base/Event";
+import { User } from "../../user/base/User";
 
 @ObjectType()
 class SubAdmin {
@@ -33,25 +33,12 @@ class SubAdmin {
   createdAt!: Date;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => Event,
   })
   @ValidateNested()
   @Type(() => Event)
-  @IsOptional()
-  event?: Event | null;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  eventRelation!: string | null;
+  event?: Event;
 
   @ApiProperty({
     required: true,
@@ -79,6 +66,14 @@ class SubAdmin {
   @Type(() => Date)
   @Field(() => Date)
   updatedAt!: Date;
+
+  @ApiProperty({
+    required: true,
+    type: () => User,
+  })
+  @ValidateNested()
+  @Type(() => User)
+  user?: User;
 }
 
 export { SubAdmin as SubAdmin };

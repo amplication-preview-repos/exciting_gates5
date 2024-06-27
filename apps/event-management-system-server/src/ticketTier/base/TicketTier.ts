@@ -26,6 +26,7 @@ import {
 
 import { Type } from "class-transformer";
 import { Event } from "../../event/base/Event";
+import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
 
 @ObjectType()
 class TicketTier {
@@ -53,33 +54,7 @@ class TicketTier {
   @Field(() => Number, {
     nullable: true,
   })
-  amountOnSaleTs!: number | null;
-
-  @ApiProperty({
-    required: false,
-    type: Number,
-  })
-  @IsInt()
-  @Min(-999999999)
-  @Max(999999999)
-  @IsOptional()
-  @Field(() => Number, {
-    nullable: true,
-  })
   amountSold!: number | null;
-
-  @ApiProperty({
-    required: false,
-    type: Number,
-  })
-  @IsInt()
-  @Min(-999999999)
-  @Max(999999999)
-  @IsOptional()
-  @Field(() => Number, {
-    nullable: true,
-  })
-  amountSoldTs!: number | null;
 
   @ApiProperty({
     required: true,
@@ -102,17 +77,6 @@ class TicketTier {
 
   @ApiProperty({
     required: false,
-  })
-  @IsDate()
-  @Type(() => Date)
-  @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
-  endDateTs!: Date | null;
-
-  @ApiProperty({
-    required: false,
     type: () => Event,
   })
   @ValidateNested()
@@ -130,16 +94,12 @@ class TicketTier {
 
   @ApiProperty({
     required: false,
-    type: Number,
+    type: () => [PurchasedTicket],
   })
-  @IsNumber()
-  @Min(-999999999)
-  @Max(999999999)
+  @ValidateNested()
+  @Type(() => PurchasedTicket)
   @IsOptional()
-  @Field(() => Number, {
-    nullable: true,
-  })
-  purchasePrice!: number | null;
+  purchasedTickets?: Array<PurchasedTicket>;
 
   @ApiProperty({
     required: false,
@@ -152,7 +112,7 @@ class TicketTier {
   @Field(() => Number, {
     nullable: true,
   })
-  purchasePriceTs!: number | null;
+  purchasePrice!: number | null;
 
   @ApiProperty({
     required: false,
@@ -167,17 +127,6 @@ class TicketTier {
 
   @ApiProperty({
     required: false,
-  })
-  @IsDate()
-  @Type(() => Date)
-  @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
-  startDateTs!: Date | null;
-
-  @ApiProperty({
-    required: false,
     type: String,
   })
   @IsString()
@@ -187,18 +136,6 @@ class TicketTier {
     nullable: true,
   })
   title!: string | null;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(1000)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  titleTs!: string | null;
 
   @ApiProperty({
     required: true,

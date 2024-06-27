@@ -14,11 +14,13 @@ import { ApiProperty } from "@nestjs/swagger";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
+import { PreferenceListRelationFilter } from "../../preference/base/PreferenceListRelationFilter";
 import { EventListRelationFilter } from "../../event/base/EventListRelationFilter";
 import { StringFilter } from "../../util/StringFilter";
+import { BooleanFilter } from "../../util/BooleanFilter";
 import { NotificationListRelationFilter } from "../../notification/base/NotificationListRelationFilter";
-import { JsonFilter } from "../../util/JsonFilter";
 import { PurchasedTicketListRelationFilter } from "../../purchasedTicket/base/PurchasedTicketListRelationFilter";
+import { SubAdminListRelationFilter } from "../../subAdmin/base/SubAdminListRelationFilter";
 import { WalletWhereUniqueInput } from "../../wallet/base/WalletWhereUniqueInput";
 
 @InputType()
@@ -33,6 +35,18 @@ class UserWhereInput {
     nullable: true,
   })
   email?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => PreferenceListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => PreferenceListRelationFilter)
+  @IsOptional()
+  @Field(() => PreferenceListRelationFilter, {
+    nullable: true,
+  })
+  eventPreferences?: PreferenceListRelationFilter;
 
   @ApiProperty({
     required: false,
@@ -67,6 +81,17 @@ class UserWhereInput {
     nullable: true,
   })
   id?: StringFilter;
+
+  @ApiProperty({
+    required: false,
+    type: BooleanFilter,
+  })
+  @Type(() => BooleanFilter)
+  @IsOptional()
+  @Field(() => BooleanFilter, {
+    nullable: true,
+  })
+  isBan?: BooleanFilter;
 
   @ApiProperty({
     required: false,
@@ -126,17 +151,6 @@ class UserWhereInput {
 
   @ApiProperty({
     required: false,
-    type: JsonFilter,
-  })
-  @Type(() => JsonFilter)
-  @IsOptional()
-  @Field(() => JsonFilter, {
-    nullable: true,
-  })
-  preferences?: JsonFilter;
-
-  @ApiProperty({
-    required: false,
     type: () => PurchasedTicketListRelationFilter,
   })
   @ValidateNested()
@@ -146,6 +160,18 @@ class UserWhereInput {
     nullable: true,
   })
   purchasedTickets?: PurchasedTicketListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => SubAdminListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => SubAdminListRelationFilter)
+  @IsOptional()
+  @Field(() => SubAdminListRelationFilter, {
+    nullable: true,
+  })
+  subAdmins?: SubAdminListRelationFilter;
 
   @ApiProperty({
     required: false,

@@ -48,6 +48,9 @@ export class WalletControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBody({
+    type: WalletCreateInput,
+  })
   async createWallet(@common.Body() data: WalletCreateInput): Promise<Wallet> {
     return await this.service.createWallet({
       data: {
@@ -155,6 +158,9 @@ export class WalletControllerBase {
   })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
+  })
+  @swagger.ApiBody({
+    type: WalletUpdateInput,
   })
   async updateWallet(
     @common.Param() params: WalletWhereUniqueInput,

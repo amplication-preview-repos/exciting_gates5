@@ -26,6 +26,9 @@ import { User } from "./User";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserWhereUniqueInput } from "./UserWhereUniqueInput";
 import { UserUpdateInput } from "./UserUpdateInput";
+import { PreferenceFindManyArgs } from "../../preference/base/PreferenceFindManyArgs";
+import { Preference } from "../../preference/base/Preference";
+import { PreferenceWhereUniqueInput } from "../../preference/base/PreferenceWhereUniqueInput";
 import { EventFindManyArgs } from "../../event/base/EventFindManyArgs";
 import { Event } from "../../event/base/Event";
 import { EventWhereUniqueInput } from "../../event/base/EventWhereUniqueInput";
@@ -35,6 +38,9 @@ import { NotificationWhereUniqueInput } from "../../notification/base/Notificati
 import { PurchasedTicketFindManyArgs } from "../../purchasedTicket/base/PurchasedTicketFindManyArgs";
 import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
 import { PurchasedTicketWhereUniqueInput } from "../../purchasedTicket/base/PurchasedTicketWhereUniqueInput";
+import { SubAdminFindManyArgs } from "../../subAdmin/base/SubAdminFindManyArgs";
+import { SubAdmin } from "../../subAdmin/base/SubAdmin";
+import { SubAdminWhereUniqueInput } from "../../subAdmin/base/SubAdminWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -54,6 +60,9 @@ export class UserControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBody({
+    type: UserCreateInput,
+  })
   async createUser(@common.Body() data: UserCreateInput): Promise<User> {
     return await this.service.createUser({
       data: {
@@ -70,11 +79,11 @@ export class UserControllerBase {
         email: true,
         firstName: true,
         id: true,
+        isBan: true,
         lastName: true,
         mobile: true,
         nationality: true,
         nickName: true,
-        preferences: true,
         roles: true,
         updatedAt: true,
         username: true,
@@ -109,11 +118,11 @@ export class UserControllerBase {
         email: true,
         firstName: true,
         id: true,
+        isBan: true,
         lastName: true,
         mobile: true,
         nationality: true,
         nickName: true,
-        preferences: true,
         roles: true,
         updatedAt: true,
         username: true,
@@ -149,11 +158,11 @@ export class UserControllerBase {
         email: true,
         firstName: true,
         id: true,
+        isBan: true,
         lastName: true,
         mobile: true,
         nationality: true,
         nickName: true,
-        preferences: true,
         roles: true,
         updatedAt: true,
         username: true,
@@ -185,6 +194,9 @@ export class UserControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBody({
+    type: UserUpdateInput,
+  })
   async updateUser(
     @common.Param() params: UserWhereUniqueInput,
     @common.Body() data: UserUpdateInput
@@ -206,11 +218,11 @@ export class UserControllerBase {
           email: true,
           firstName: true,
           id: true,
+          isBan: true,
           lastName: true,
           mobile: true,
           nationality: true,
           nickName: true,
-          preferences: true,
           roles: true,
           updatedAt: true,
           username: true,
@@ -254,11 +266,11 @@ export class UserControllerBase {
           email: true,
           firstName: true,
           id: true,
+          isBan: true,
           lastName: true,
           mobile: true,
           nationality: true,
           nickName: true,
-          preferences: true,
           roles: true,
           updatedAt: true,
           username: true,
@@ -278,6 +290,104 @@ export class UserControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/eventPreferences")
+  @ApiNestedQuery(PreferenceFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Preference",
+    action: "read",
+    possession: "any",
+  })
+  async findEventPreferences(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Preference[]> {
+    const query = plainToClass(PreferenceFindManyArgs, request.query);
+    const results = await this.service.findEventPreferences(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        description: true,
+        id: true,
+        image: true,
+        title: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/eventPreferences")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectEventPreferences(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: PreferenceWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      eventPreferences: {
+        connect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/eventPreferences")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateEventPreferences(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: PreferenceWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      eventPreferences: {
+        set: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/eventPreferences")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectEventPreferences(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: PreferenceWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      eventPreferences: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
@@ -512,6 +622,7 @@ export class UserControllerBase {
     const results = await this.service.findPurchasedTickets(params.id, {
       ...query,
       select: {
+        code: true,
         createdAt: true,
 
         event: {
@@ -521,10 +632,9 @@ export class UserControllerBase {
         },
 
         id: true,
-        qrCode: true,
         status: true,
 
-        ticket: {
+        ticketTier: {
           select: {
             id: true,
           },
@@ -603,6 +713,115 @@ export class UserControllerBase {
   ): Promise<void> {
     const data = {
       purchasedTickets: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/subAdmins")
+  @ApiNestedQuery(SubAdminFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "SubAdmin",
+    action: "read",
+    possession: "any",
+  })
+  async findSubAdmins(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<SubAdmin[]> {
+    const query = plainToClass(SubAdminFindManyArgs, request.query);
+    const results = await this.service.findSubAdmins(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+
+        event: {
+          select: {
+            id: true,
+          },
+        },
+
+        id: true,
+        isActive: true,
+        updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/subAdmins")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectSubAdmins(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: SubAdminWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      subAdmins: {
+        connect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/subAdmins")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateSubAdmins(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: SubAdminWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      subAdmins: {
+        set: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/subAdmins")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectSubAdmins(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: SubAdminWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      subAdmins: {
         disconnect: body,
       },
     };

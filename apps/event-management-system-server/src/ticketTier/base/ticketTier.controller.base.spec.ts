@@ -19,72 +19,48 @@ const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
   amountOnSale: 42,
-  amountOnSaleTs: 42,
   amountSold: 42,
-  amountSoldTs: 42,
   createdAt: new Date(),
   endDate: new Date(),
-  endDateTs: new Date(),
   id: "exampleId",
   purchasePrice: 42.42,
-  purchasePriceTs: 42.42,
   startDate: new Date(),
-  startDateTs: new Date(),
   title: "exampleTitle",
-  titleTs: "exampleTitleTs",
   updatedAt: new Date(),
 };
 const CREATE_RESULT = {
   amountOnSale: 42,
-  amountOnSaleTs: 42,
   amountSold: 42,
-  amountSoldTs: 42,
   createdAt: new Date(),
   endDate: new Date(),
-  endDateTs: new Date(),
   id: "exampleId",
   purchasePrice: 42.42,
-  purchasePriceTs: 42.42,
   startDate: new Date(),
-  startDateTs: new Date(),
   title: "exampleTitle",
-  titleTs: "exampleTitleTs",
   updatedAt: new Date(),
 };
 const FIND_MANY_RESULT = [
   {
     amountOnSale: 42,
-    amountOnSaleTs: 42,
     amountSold: 42,
-    amountSoldTs: 42,
     createdAt: new Date(),
     endDate: new Date(),
-    endDateTs: new Date(),
     id: "exampleId",
     purchasePrice: 42.42,
-    purchasePriceTs: 42.42,
     startDate: new Date(),
-    startDateTs: new Date(),
     title: "exampleTitle",
-    titleTs: "exampleTitleTs",
     updatedAt: new Date(),
   },
 ];
 const FIND_ONE_RESULT = {
   amountOnSale: 42,
-  amountOnSaleTs: 42,
   amountSold: 42,
-  amountSoldTs: 42,
   createdAt: new Date(),
   endDate: new Date(),
-  endDateTs: new Date(),
   id: "exampleId",
   purchasePrice: 42.42,
-  purchasePriceTs: 42.42,
   startDate: new Date(),
-  startDateTs: new Date(),
   title: "exampleTitle",
-  titleTs: "exampleTitleTs",
   updatedAt: new Date(),
 };
 
@@ -172,9 +148,7 @@ describe("TicketTier", () => {
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
         endDate: CREATE_RESULT.endDate.toISOString(),
-        endDateTs: CREATE_RESULT.endDateTs.toISOString(),
         startDate: CREATE_RESULT.startDate.toISOString(),
-        startDateTs: CREATE_RESULT.startDateTs.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
       });
   });
@@ -188,9 +162,7 @@ describe("TicketTier", () => {
           ...FIND_MANY_RESULT[0],
           createdAt: FIND_MANY_RESULT[0].createdAt.toISOString(),
           endDate: FIND_MANY_RESULT[0].endDate.toISOString(),
-          endDateTs: FIND_MANY_RESULT[0].endDateTs.toISOString(),
           startDate: FIND_MANY_RESULT[0].startDate.toISOString(),
-          startDateTs: FIND_MANY_RESULT[0].startDateTs.toISOString(),
           updatedAt: FIND_MANY_RESULT[0].updatedAt.toISOString(),
         },
       ]);
@@ -215,9 +187,7 @@ describe("TicketTier", () => {
         ...FIND_ONE_RESULT,
         createdAt: FIND_ONE_RESULT.createdAt.toISOString(),
         endDate: FIND_ONE_RESULT.endDate.toISOString(),
-        endDateTs: FIND_ONE_RESULT.endDateTs.toISOString(),
         startDate: FIND_ONE_RESULT.startDate.toISOString(),
-        startDateTs: FIND_ONE_RESULT.startDateTs.toISOString(),
         updatedAt: FIND_ONE_RESULT.updatedAt.toISOString(),
       });
   });
@@ -232,9 +202,7 @@ describe("TicketTier", () => {
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
         endDate: CREATE_RESULT.endDate.toISOString(),
-        endDateTs: CREATE_RESULT.endDateTs.toISOString(),
         startDate: CREATE_RESULT.startDate.toISOString(),
-        startDateTs: CREATE_RESULT.startDateTs.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
       })
       .then(function () {

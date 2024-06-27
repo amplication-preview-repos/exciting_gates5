@@ -14,9 +14,9 @@ import { ApiProperty } from "@nestjs/swagger";
 import { EventWhereUniqueInput } from "../../event/base/EventWhereUniqueInput";
 import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
-import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { StringFilter } from "../../util/StringFilter";
 import { BooleanNullableFilter } from "../../util/BooleanNullableFilter";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class SubAdminWhereInput {
@@ -31,17 +31,6 @@ class SubAdminWhereInput {
     nullable: true,
   })
   event?: EventWhereUniqueInput;
-
-  @ApiProperty({
-    required: false,
-    type: StringNullableFilter,
-  })
-  @Type(() => StringNullableFilter)
-  @IsOptional()
-  @Field(() => StringNullableFilter, {
-    nullable: true,
-  })
-  eventRelation?: StringNullableFilter;
 
   @ApiProperty({
     required: false,
@@ -64,6 +53,18 @@ class SubAdminWhereInput {
     nullable: true,
   })
   isActive?: BooleanNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  @IsOptional()
+  @Field(() => UserWhereUniqueInput, {
+    nullable: true,
+  })
+  user?: UserWhereUniqueInput;
 }
 
 export { SubAdminWhereInput as SubAdminWhereInput };

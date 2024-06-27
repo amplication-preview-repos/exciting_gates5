@@ -39,29 +39,7 @@ class TicketTierOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  amountOnSaleTs?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
   amountSold?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  amountSoldTs?: SortOrder;
 
   @ApiProperty({
     required: false,
@@ -84,17 +62,6 @@ class TicketTierOrderByInput {
     nullable: true,
   })
   endDate?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  endDateTs?: SortOrder;
 
   @ApiProperty({
     required: false,
@@ -138,17 +105,6 @@ class TicketTierOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  purchasePriceTs?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
   startDate?: SortOrder;
 
   @ApiProperty({
@@ -160,29 +116,7 @@ class TicketTierOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  startDateTs?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
   title?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  titleTs?: SortOrder;
 
   @ApiProperty({
     required: false,

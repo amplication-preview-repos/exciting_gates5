@@ -26,6 +26,9 @@ import { TicketTier } from "./TicketTier";
 import { TicketTierFindManyArgs } from "./TicketTierFindManyArgs";
 import { TicketTierWhereUniqueInput } from "./TicketTierWhereUniqueInput";
 import { TicketTierUpdateInput } from "./TicketTierUpdateInput";
+import { PurchasedTicketFindManyArgs } from "../../purchasedTicket/base/PurchasedTicketFindManyArgs";
+import { PurchasedTicket } from "../../purchasedTicket/base/PurchasedTicket";
+import { PurchasedTicketWhereUniqueInput } from "../../purchasedTicket/base/PurchasedTicketWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -45,6 +48,9 @@ export class TicketTierControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBody({
+    type: TicketTierCreateInput,
+  })
   async createTicketTier(
     @common.Body() data: TicketTierCreateInput
   ): Promise<TicketTier> {
@@ -60,12 +66,9 @@ export class TicketTierControllerBase {
       },
       select: {
         amountOnSale: true,
-        amountOnSaleTs: true,
         amountSold: true,
-        amountSoldTs: true,
         createdAt: true,
         endDate: true,
-        endDateTs: true,
 
         event: {
           select: {
@@ -75,11 +78,8 @@ export class TicketTierControllerBase {
 
         id: true,
         purchasePrice: true,
-        purchasePriceTs: true,
         startDate: true,
-        startDateTs: true,
         title: true,
-        titleTs: true,
         updatedAt: true,
       },
     });
@@ -103,12 +103,9 @@ export class TicketTierControllerBase {
       ...args,
       select: {
         amountOnSale: true,
-        amountOnSaleTs: true,
         amountSold: true,
-        amountSoldTs: true,
         createdAt: true,
         endDate: true,
-        endDateTs: true,
 
         event: {
           select: {
@@ -118,11 +115,8 @@ export class TicketTierControllerBase {
 
         id: true,
         purchasePrice: true,
-        purchasePriceTs: true,
         startDate: true,
-        startDateTs: true,
         title: true,
-        titleTs: true,
         updatedAt: true,
       },
     });
@@ -147,12 +141,9 @@ export class TicketTierControllerBase {
       where: params,
       select: {
         amountOnSale: true,
-        amountOnSaleTs: true,
         amountSold: true,
-        amountSoldTs: true,
         createdAt: true,
         endDate: true,
-        endDateTs: true,
 
         event: {
           select: {
@@ -162,11 +153,8 @@ export class TicketTierControllerBase {
 
         id: true,
         purchasePrice: true,
-        purchasePriceTs: true,
         startDate: true,
-        startDateTs: true,
         title: true,
-        titleTs: true,
         updatedAt: true,
       },
     });
@@ -190,6 +178,9 @@ export class TicketTierControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
+  @swagger.ApiBody({
+    type: TicketTierUpdateInput,
+  })
   async updateTicketTier(
     @common.Param() params: TicketTierWhereUniqueInput,
     @common.Body() data: TicketTierUpdateInput
@@ -208,12 +199,9 @@ export class TicketTierControllerBase {
         },
         select: {
           amountOnSale: true,
-          amountOnSaleTs: true,
           amountSold: true,
-          amountSoldTs: true,
           createdAt: true,
           endDate: true,
-          endDateTs: true,
 
           event: {
             select: {
@@ -223,11 +211,8 @@ export class TicketTierControllerBase {
 
           id: true,
           purchasePrice: true,
-          purchasePriceTs: true,
           startDate: true,
-          startDateTs: true,
           title: true,
-          titleTs: true,
           updatedAt: true,
         },
       });
@@ -260,12 +245,9 @@ export class TicketTierControllerBase {
         where: params,
         select: {
           amountOnSale: true,
-          amountOnSaleTs: true,
           amountSold: true,
-          amountSoldTs: true,
           createdAt: true,
           endDate: true,
-          endDateTs: true,
 
           event: {
             select: {
@@ -275,11 +257,8 @@ export class TicketTierControllerBase {
 
           id: true,
           purchasePrice: true,
-          purchasePriceTs: true,
           startDate: true,
-          startDateTs: true,
           title: true,
-          titleTs: true,
           updatedAt: true,
         },
       });
@@ -291,5 +270,122 @@ export class TicketTierControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/purchasedTickets")
+  @ApiNestedQuery(PurchasedTicketFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "PurchasedTicket",
+    action: "read",
+    possession: "any",
+  })
+  async findPurchasedTickets(
+    @common.Req() request: Request,
+    @common.Param() params: TicketTierWhereUniqueInput
+  ): Promise<PurchasedTicket[]> {
+    const query = plainToClass(PurchasedTicketFindManyArgs, request.query);
+    const results = await this.service.findPurchasedTickets(params.id, {
+      ...query,
+      select: {
+        code: true,
+        createdAt: true,
+
+        event: {
+          select: {
+            id: true,
+          },
+        },
+
+        id: true,
+        status: true,
+
+        ticketTier: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/purchasedTickets")
+  @nestAccessControl.UseRoles({
+    resource: "TicketTier",
+    action: "update",
+    possession: "any",
+  })
+  async connectPurchasedTickets(
+    @common.Param() params: TicketTierWhereUniqueInput,
+    @common.Body() body: PurchasedTicketWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      purchasedTickets: {
+        connect: body,
+      },
+    };
+    await this.service.updateTicketTier({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/purchasedTickets")
+  @nestAccessControl.UseRoles({
+    resource: "TicketTier",
+    action: "update",
+    possession: "any",
+  })
+  async updatePurchasedTickets(
+    @common.Param() params: TicketTierWhereUniqueInput,
+    @common.Body() body: PurchasedTicketWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      purchasedTickets: {
+        set: body,
+      },
+    };
+    await this.service.updateTicketTier({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/purchasedTickets")
+  @nestAccessControl.UseRoles({
+    resource: "TicketTier",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectPurchasedTickets(
+    @common.Param() params: TicketTierWhereUniqueInput,
+    @common.Body() body: PurchasedTicketWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      purchasedTickets: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateTicketTier({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }
